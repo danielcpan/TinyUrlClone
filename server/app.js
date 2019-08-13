@@ -1,7 +1,7 @@
 /* eslint no-console: 0 */
 require('dotenv').config();
 const express = require('express');
-// const Sequelize = require('sequelize');
+const mongoose = require('mongoose');
 const httpStatus = require('http-status');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -64,6 +64,14 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
     message: err.message,
     stack: process.env.NODE_ENV === 'development' ? err.stack : {},
   });
+});
+
+// Mongoose Connect to database
+mongoose.connect('mongodb://127.0.0.1:27017/tiny_url_clone_development', { useNewUrlParser: true })
+.catch(error => console.log(error));
+
+mongoose.connection.on('error', err => {
+  console.log(err);
 });
 
 module.exports = app;
