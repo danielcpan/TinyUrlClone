@@ -1,8 +1,15 @@
 const mongoose = require('mongoose');
 
 const LinkSchema = new mongoose.Schema({
-  _id: {
+  // _id: {
+  //   type: Number,
+  //   unique: true,
+  //   default: 0,
+  // },
+  index: {
     type: Number,
+    unique: true,
+    index: true
   },
   tinyUrl: {
     type: String,
@@ -13,7 +20,7 @@ const LinkSchema = new mongoose.Schema({
   },
   uniqueClicks: {
     type: Number,
-    default: 0,    
+    default: 0,
   },
   totalClicks: {
     type: Number,
@@ -21,8 +28,11 @@ const LinkSchema = new mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now    
+    default: Date.now,
   },
-})
+});
+
+// LinkSchema.index({index: 1});
+
 
 module.exports = mongoose.model('Link', LinkSchema);

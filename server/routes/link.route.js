@@ -10,6 +10,6 @@ router.route('/')
 router.route('/:linkId')
   .get(linkController.get)
   .put(linkController.update)
-  .put(linkController.delete);
+  .delete(linkController.delete);
 
 module.exports = router;

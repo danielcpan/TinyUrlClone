@@ -60,11 +60,13 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
 // Mongoose Connect to database
 mongoose
   .connect('mongodb://127.0.0.1:27017/tiny_url_clone_development', { useNewUrlParser: true })
-  .catch(error => console.log(error));
+  .catch((error) => console.log(error));
 
 // const db = mongoose.connection;
+mongoose.set('useCreateIndex', true);
+mongoose.set('debug', true);
 
-mongoose.connection.on('error', err => {
+mongoose.connection.on('error', (err) => {
   console.log(err);
 });
 
