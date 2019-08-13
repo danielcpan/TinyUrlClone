@@ -16,18 +16,9 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Force close connection, sometimes it persists
-// db.sequelize.close()
+// Object.keys(mongoose.models).forEach(model => console.log(mongoose.models[model].find({})))
+// console.log(Object.keys(mongoose.models))
 
-// if (process.env.NODE_ENV === 'development') {
-// Sync the database models
-// const models = require('./models');
-// models.sequelize.sync({
-//   force: true,
-// });
-
-// const { createTestData } = require('./seeders/testData');
-// createTestData()
 
 // app.use(express.static(path.resolve(__dirname, '../client/build')));
 
@@ -67,8 +58,11 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
 });
 
 // Mongoose Connect to database
-mongoose.connect('mongodb://127.0.0.1:27017/tiny_url_clone_development', { useNewUrlParser: true })
-.catch(error => console.log(error));
+mongoose
+  .connect('mongodb://127.0.0.1:27017/tiny_url_clone_development', { useNewUrlParser: true })
+  .catch(error => console.log(error));
+
+// const db = mongoose.connection;
 
 mongoose.connection.on('error', err => {
   console.log(err);

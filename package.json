@@ -4,6 +4,7 @@
   "description": "Creates a shortened redirect link to your url",
   "main": "server.js",
   "scripts": {
+    "lint": "./node_modules/.bin/eslint --fix server",
     "start": "nodemon server/server.js",
     "test": "NODE_ENV=test node_modules/.bin/mocha --opts server/mocha.opts --exit",
     "tests": "NODE_ENV=test node_modules/.bin/mocha --opts server/mocha.opts server/tests/*.js --exit"
@@ -30,5 +31,10 @@
     "mongoose": "^5.6.9",
     "nodemon": "^1.19.1",
     "supertest": "^4.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2"
   }
 }

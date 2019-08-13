@@ -29,6 +29,10 @@ module.exports = {
   create: async (req, res, next) => {
     try {
       const link = new Link(req.body);
+      const counter = await Counter.findOne({_id: 'linkid'})
+      counter.seq++;
+      await counter.save()
+      link._id = counter.seq.toString()
       await link.save();
       return res.json(link);
     } catch (err) {

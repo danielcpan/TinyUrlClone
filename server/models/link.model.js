@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 
 const LinkSchema = new mongoose.Schema({
+  _id: {
+    type: Number,
+  },
   tinyUrl: {
     type: String,
   },
