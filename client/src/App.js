@@ -15,22 +15,21 @@ import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import { TextField } from '@material-ui/core';
 
-const Copyright = () => {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
+const Copyright = () => (
+  <Typography variant="body2" color="textSecondary" align="center">
+    {'Copyright © '}
+    <Link color="inherit" href="https://material-ui.com/">
         Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'. Built with '}
-      <Link color="inherit" href="https://material-ui.com/">
+    </Link>
+    {' '}
+    {new Date().getFullYear()}
+    {'. Built with '}
+    <Link color="inherit" href="https://material-ui.com/">
         Material-UI.
-      </Link>
-    </Typography>
-  );
-}
-const useStyles = makeStyles(theme => ({
+    </Link>
+  </Typography>
+);
+const useStyles = makeStyles((theme) => ({
   icon: {
     marginRight: theme.spacing(2),
   },
@@ -62,8 +61,8 @@ const useStyles = makeStyles(theme => ({
   },
   shortenButton: {
     width: '100%',
-    lineHeight: 3.2
-  }
+    lineHeight: 3.2,
+  },
 }));
 
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -72,7 +71,7 @@ const App = () => {
   const classes = useStyles();
 
   return (
-    <React.Fragment>
+    <>
       <CssBaseline />
       <AppBar position="relative">
         <Toolbar>
@@ -120,7 +119,7 @@ const App = () => {
                     fullWidth
                     InputProps={{
                       readOnly: true,
-                    }}                    
+                    }}
                   />
                 </Grid>
               </Grid>
@@ -130,7 +129,7 @@ const App = () => {
         <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            {cards.map(card => (
+            {cards.map((card) => (
               <Grid item key={card} xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
                   <CardMedia
@@ -171,8 +170,8 @@ const App = () => {
         <Copyright />
       </footer>
       {/* End footer */}
-    </React.Fragment>
+    </>
   );
-}
+};
 
 export default App;
