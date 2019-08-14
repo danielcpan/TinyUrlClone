@@ -1,14 +1,14 @@
 const httpStatus = require('http-status');
-// const models = require('../models');
-const { getNextSequence } = require('../utils/mongoose.utils');
-const Counter = require('../models/counter.model');
+
+const { decimalToBaseN, getNextSequence } = require('../utils/mongoose.utils');
 const Link = require('../models/link.model');
 const APIError = require('../utils/APIError.utils');
+const { PUBLIC_URL } = require('../config/config');
 
 module.exports = {
   get: async (req, res, next) => {
     try {
-      const link = await Link.findOne({ _id: req.params.linkId });
+      const link = await Link.findOne({ _id: req.params.linkId }).populate('visits');
       if (!link) {
         return next(new APIError('Link not found', httpStatus.NOT_FOUND));
       }
@@ -27,9 +27,13 @@ module.exports = {
   },
   create: async (req, res, next) => {
     try {
+      const nextSeq = await getNextSequence('linkId')
+      const tinyUrl = `${PUBLIC_URL}/${decimalToBaseN(nextSeq, 62)}`
+
       const link = await Link.create({
         ...req.body, 
-        index: await getNextSequence('linkId')
+        index: nextSeq,
+        tinyUrl
       });
       return res.status(httpStatus.CREATED).json(link);
     } catch (err) {

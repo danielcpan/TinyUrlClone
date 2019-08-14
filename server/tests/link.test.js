@@ -40,6 +40,8 @@ describe('## Link APIs', () => {
       }
       const response = await request(app).post(`/api/links`).send(data)
 
+      console.log(response.body)
+
       expect(response.status).to.equal(httpStatus.CREATED);
       expect(response.body.originalUrl).to.equal(data.originalUrl)
     });

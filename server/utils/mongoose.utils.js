@@ -17,7 +17,7 @@ module.exports.clearDatabase = async () => {
   await Counter.create({_id: 'linkId', seq: 0})
 };
 
-const decimalToBaseN = (decimal, baseN) => {
+module.exports.decimalToBaseN = (decimal, baseN) => {
   const remainders = [];
 
   while (decimal > 0) {
@@ -26,11 +26,11 @@ const decimalToBaseN = (decimal, baseN) => {
     decimal = quotient;
     remainders.push(remainder);
   }
-
-  return remainders.reverse().map((remainder) => BASE_62[remainder]).join('');
+  const result = remainders.reverse().map((remainder) => BASE_62[remainder]).join('');
+  return pad(result, 6)
 };
 
-const baseNToDecimal = (baseVal, baseN) => {
+module.exports.baseNToDecimal = (baseVal, baseN) => {
   let sum = 0;
   let index = 0;
   baseVal = baseVal.toString();
@@ -38,8 +38,13 @@ const baseNToDecimal = (baseVal, baseN) => {
     sum += (baseN ** index) * BASE_62.indexOf(baseVal[i]);
     index++;
   }
-  return sum;
+  return pad(sum, 6)
 };
+
+const pad = (num, size) => {
+  var s = "0".repeat(size) + num;
+  return s.substr(s.length-size);
+}
 
 const getFromBaseToBase = (number, fromBase, toBase) => {
   const decimal = baseNToDecimal(number, fromBase);

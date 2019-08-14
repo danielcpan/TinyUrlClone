@@ -15,15 +15,15 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// Object.keys(mongoose.models).forEach(model => console.log(mongoose.models[model].find({})))
-// console.log(Object.keys(mongoose.models))
-
+app.set('trust proxy', true)
 
 // app.use(express.static(path.resolve(__dirname, '../client/build')));
-
+// const tinyUrlRoutes = require('./routes/tinyUrl.route');
+const tinyUrlController = require('./controllers/tinyUrl.controller');
+// router.use('/:tinyUrl', tinyUrlRoutes);
 // Mount all routes on /api path
 app.use('/api', routes);
+app.get('/:tinyUrl', tinyUrlController.get);
 
 // If error is not an instanceOf APIError, convert it.
 // app.use((err, req, res, next) => {
