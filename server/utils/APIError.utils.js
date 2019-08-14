@@ -1,4 +1,4 @@
-// import status from 'http-status';
+/* eslint-disable max-classes-per-file */
 const httpStatus = require('http-status');
 
 /**

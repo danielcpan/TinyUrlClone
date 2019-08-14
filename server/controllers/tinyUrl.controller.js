@@ -1,10 +1,10 @@
 const httpStatus = require('http-status');
-const axios = require('axios')
+const axios = require('axios');
 
 const Link = require('../models/link.model');
 const Visit = require('../models/visit.model');
 const APIError = require('../utils/APIError.utils');
-const { PUBLIC_URL, IP_INFO_TOKEN } = require('../config/config')
+const { PUBLIC_URL, IP_INFO_TOKEN } = require('../config/config');
 
 module.exports = {
   get: async (req, res, next) => {
@@ -18,25 +18,25 @@ module.exports = {
 
       // TEST IP
       if (process.env.NODE_ENV === 'test' || req.ip === '::1' || req.ip === '::ffff:127.0.0.1') {
-        ip = '117.141.106.236'
+        ip = '117.141.106.236';
       }
       const response = await axios.get(`https://ipinfo.io/${ip}`, {
-        headers: { Authorization: `Bearer ${IP_INFO_TOKEN}`}
-      })
+        headers: { Authorization: `Bearer ${IP_INFO_TOKEN}` },
+      });
 
-      let visit = await Visit.findOne({ ip: response.data.ip })
+      let visit = await Visit.findOne({ ip: response.data.ip });
 
       // IP does not exists, is unique
       if (!visit) {
-        visit = await Visit.create({ ...response.data, link: link._id})
-        link.uniqueClicks++;
+        visit = await Visit.create({ ...response.data, link: link._id });
+        link.uniqueClicks += 1;
       }
 
-      link.totalClicks++;
-      link.visits.push(visit)
-      await link.save()
-      
-      return res.status(httpStatus.MOVED_PERMANENTLY).redirect(link.originalUrl)
+      link.totalClicks += 1;
+      link.visits.push(visit);
+      await link.save();
+
+      return res.status(httpStatus.MOVED_PERMANENTLY).redirect(link.originalUrl);
     } catch (err) {
       return next(err);
     }

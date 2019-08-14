@@ -1,12 +1,11 @@
 const mongoose = require('mongoose');
-const { decimalToBaseN } = require('../utils/mongoose.utils')
-// const Visit = require('./visit.model');
+const { decimalToBaseN } = require('../utils/mongoose.utils');
 
 const LinkSchema = new mongoose.Schema({
   index: {
     type: Number,
     unique: true,
-    index: true
+    index: true,
   },
   tinyUrl: {
     type: String,
@@ -36,7 +35,7 @@ const LinkSchema = new mongoose.Schema({
 LinkSchema.statics = {
   getTinyUrlEndPoint(index) {
     return decimalToBaseN(index, 62);
-  }
-}
+  },
+};
 
 module.exports = mongoose.model('Link', LinkSchema);

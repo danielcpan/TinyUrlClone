@@ -27,13 +27,13 @@ module.exports = {
   },
   create: async (req, res, next) => {
     try {
-      const nextSeq = await getNextSequence('linkId')
-      const tinyUrl = `${PUBLIC_URL}/${decimalToBaseN(nextSeq, 62)}`
+      const nextSeq = await getNextSequence('linkId');
+      const tinyUrl = `${PUBLIC_URL}/${decimalToBaseN(nextSeq, 62)}`;
 
       const link = await Link.create({
-        ...req.body, 
+        ...req.body,
         index: nextSeq,
-        tinyUrl
+        tinyUrl,
       });
       return res.status(httpStatus.CREATED).json(link);
     } catch (err) {
@@ -43,9 +43,9 @@ module.exports = {
   update: async (req, res, next) => {
     try {
       const link = await Link.findOneAndUpdate(
-        { _id: req.params.linkId }, 
-        req.body, 
-        { new: true }
+        { _id: req.params.linkId },
+        req.body,
+        { new: true },
       );
       if (!link) {
         return next(new APIError('Link not found', httpStatus.NOT_FOUND));

@@ -3,23 +3,23 @@ const mongoose = require('mongoose');
 const VisitSchema = new mongoose.Schema({
   link: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Link'
+    ref: 'Link',
   },
   ip: {
     type: String,
-    required: true
+    required: true,
   },
   city: {
     type: String,
-    required: true    
+    required: true,
   },
   region: {
     type: String,
-    required: true
+    required: true,
   },
   country: {
     type: String,
-    required: true
+    required: true,
   },
   loc: {
     type: String,
@@ -27,7 +27,7 @@ const VisitSchema = new mongoose.Schema({
   },
   org: {
     type: String,
-    required: true    
+    required: true,
   },
   createdAt: {
     type: Date,

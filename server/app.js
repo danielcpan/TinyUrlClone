@@ -8,6 +8,8 @@ const bodyParser = require('body-parser');
 
 const routes = require('../server/routes/index.route');
 const APIError = require('./utils/APIError.utils');
+const env = process.env.NODE_ENV || 'development';
+const config = require(`./config/config`)[env]; // eslint-disable-line import/no-dynamic-require
 
 const app = express();
 
@@ -15,15 +17,12 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.set('trust proxy', true)
+app.set('trust proxy', true);
 
 // app.use(express.static(path.resolve(__dirname, '../client/build')));
-// const tinyUrlRoutes = require('./routes/tinyUrl.route');
-const tinyUrlController = require('./controllers/tinyUrl.controller');
-// router.use('/:tinyUrl', tinyUrlRoutes);
-// Mount all routes on /api path
-app.use('/api', routes);
-app.get('/:tinyUrl', tinyUrlController.get);
+
+// Mount all routes
+app.use('/', routes);
 
 // If error is not an instanceOf APIError, convert it.
 // app.use((err, req, res, next) => {
@@ -57,12 +56,12 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   });
 });
 
+console.log(config.database)
 // Mongoose Connect to database
 mongoose
-  .connect('mongodb://127.0.0.1:27017/tiny_url_clone_development', { useNewUrlParser: true })
+  .connect(`mongodb://127.0.0.1:27017/${config.database}`, { useNewUrlParser: true })
   .catch((error) => console.log(error));
 
-// const db = mongoose.connection;
 mongoose.set('useCreateIndex', true);
 mongoose.set('debug', true);
 
