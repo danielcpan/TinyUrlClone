@@ -5,6 +5,10 @@ const VisitSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Link',
   },
+  isUnique: {
+    type: Boolean,
+    required: true
+  },
   ip: {
     type: String,
     required: true,

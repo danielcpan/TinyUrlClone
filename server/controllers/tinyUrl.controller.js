@@ -28,7 +28,7 @@ module.exports = {
 
       // IP does not exists, is unique
       if (!visit) {
-        visit = await Visit.create({ ...response.data, link: link._id });
+        visit = new Visit({ ...response.data, link: link._id, isUnique: true });
         link.uniqueClicks += 1;
       }
 

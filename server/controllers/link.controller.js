@@ -37,11 +37,13 @@ module.exports = {
       const nextSeq = await getNextSequence('linkId');
       const tinyUrl = `${PUBLIC_URL}/${decimalToBaseN(nextSeq, 62)}`;
 
-      link = await Link.create({
+      link = new Link({
         ...req.body,
         index: nextSeq,
-        tinyUrl,
-      });
+        tinyUrl,        
+      })
+      
+      await link.save();
       return res.status(httpStatus.CREATED).json(link);
     } catch (err) {
       return next(err);
@@ -49,14 +51,15 @@ module.exports = {
   },
   update: async (req, res, next) => {
     try {
-      const link = await Link.findOneAndUpdate(
-        { _id: req.params.linkId },
-        req.body,
-        { new: true },
-      );
+      const link = await Link.findOne({ _id: req.params.linkId })
+
       if (!link) {
         return next(new APIError('Link not found', httpStatus.NOT_FOUND));
       }
+
+      link.set(req.body)
+      await link.save()
+
       return res.status(httpStatus.OK).json(link);
     } catch (err) {
       return next(err);
@@ -64,10 +67,11 @@ module.exports = {
   },
   delete: async (req, res, next) => {
     try {
-      const link = await Link.findOneAndRemove({ _id: req.params.linkId });
+      const link = await Link.findOne({ _id: req.params.linkId })
       if (!link) {
         return next(new APIError('Link not found', httpStatus.NOT_FOUND));
       }
+      await link.remove()
       return res.status(httpStatus.OK).json({ deleted: true });
     } catch (err) {
       return next(err);
