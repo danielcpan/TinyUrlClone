@@ -56,7 +56,6 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   });
 });
 
-console.log(config.database)
 // Mongoose Connect to database
 mongoose
   .connect(`mongodb://127.0.0.1:27017/${config.database}`, { useNewUrlParser: true })

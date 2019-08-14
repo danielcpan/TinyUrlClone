@@ -4,6 +4,9 @@
   "description": "Creates a shortened redirect link to your url",
   "main": "server.js",
   "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "client": "npm start --prefix client",
+    "server": "nodemon server/server.js",    
     "lint": "./node_modules/.bin/eslint --fix server",
     "start": "nodemon server/server.js",
     "test": "NODE_ENV=test node_modules/.bin/mocha --opts server/mocha.opts --exit",
