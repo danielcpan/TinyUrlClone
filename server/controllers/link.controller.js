@@ -27,10 +27,17 @@ module.exports = {
   },
   create: async (req, res, next) => {
     try {
+      let link = await Link.findOne({ originalUrl: req.body.originalUrl })
+
+      // If already exists, return existing link
+      if (link) {
+        return res.json(link)
+      }
+
       const nextSeq = await getNextSequence('linkId');
       const tinyUrl = `${PUBLIC_URL}/${decimalToBaseN(nextSeq, 62)}`;
 
-      const link = await Link.create({
+      link = await Link.create({
         ...req.body,
         index: nextSeq,
         tinyUrl,

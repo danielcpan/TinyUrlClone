@@ -43,6 +43,16 @@ describe('## Link APIs', () => {
       expect(response.status).to.equal(httpStatus.CREATED);
       expect(response.body.originalUrl).to.equal(data.originalUrl);
     });
+
+    it('should return existing link if already exists', async () => {
+      const data = {
+        originalUrl: 'https://foobar.com/',
+      };
+      const response = await request(app).post('/api/links').send(data);
+
+      expect(response.status).to.equal(httpStatus.OK);
+      expect(response.body.originalUrl).to.equal(data.originalUrl);
+    });    
   });
 
   describe('# PUT /api/links/:linkId', () => {
