@@ -25,17 +25,14 @@ app.set('trust proxy', true);
 app.use('/', routes);
 
 // If error is not an instanceOf APIError, convert it.
-// app.use((err, req, res, next) => {
-//   if (err instanceof Sequelize.ValidationError) {
-//     const unifiedErrorMessage = err.errors.map(error => error.message).join(', ');
-//     const error = new APIError(unifiedErrorMessage, err.status, true);
-//     return next(error);
-//   } if (!(err instanceof APIError)) {
-//     const apiError = new APIError(err.message, err.status);
-//     return next(apiError);
-//   }
-//   return next(err);
-// });
+app.use((err, req, res, next) => {
+  if (!(err instanceof APIError)) {
+    const apiError = new APIError(err.message, err.status);
+    return next(apiError);
+  }
+
+  return next(err);
+});
 
 // app.get('*', (req, res) => {
 //   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));

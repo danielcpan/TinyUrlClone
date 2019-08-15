@@ -5,6 +5,7 @@ import {
 
 const initialState = {
   currentLink: {},
+  createdLinks: []
 };
 
 export default (state = initialState, action) => {
@@ -15,6 +16,11 @@ export default (state = initialState, action) => {
         currentLink: action.payload,
       };
     case CREATE_LINK:
+      return {
+        ...state,
+        // createdLinks: [...state.createdLinks, action.payload]
+        createdLinks: [action.payload, ...state.createdLinks]
+      }
     default:
       return state;
   }
