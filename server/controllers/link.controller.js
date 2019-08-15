@@ -8,7 +8,7 @@ const { PUBLIC_URL } = require('../config/config');
 module.exports = {
   get: async (req, res, next) => {
     try {
-      const link = await Link.findOne({ _id: req.params.linkId }).populate('visits');      
+      const link = await Link.findOne({ _id: req.params.linkId }).populate('visits');
 
       if (!link) {
         return next(new APIError('Link not found', httpStatus.NOT_FOUND));
@@ -28,7 +28,7 @@ module.exports = {
         query.where({ tinyUrlId })
       }
 
-      const links = await query
+      const links = await query.populate('visits')
 
       if (links.length === 0) {
         return next(new APIError('Link not found', httpStatus.NOT_FOUND));

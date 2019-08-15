@@ -11,7 +11,7 @@ export const getLinkAnalytics = tinyUrlId => async dispatch => {
     const response = await axios.get(`/api/links?tinyUrlId=${tinyUrlId}`);    
     dispatch({
       type: GET_LINK_ANALYTICS,
-      payload: response.data,
+      payload: response.data[0],
     });
   } catch (err) {
     const snackbarPayload = {

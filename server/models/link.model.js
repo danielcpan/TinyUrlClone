@@ -39,10 +39,8 @@ const LinkSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Visit',
   }],
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
+}, {
+  timestamps: true
 });
 
 LinkSchema.statics = {

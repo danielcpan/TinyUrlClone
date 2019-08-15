@@ -6,6 +6,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import format from 'date-fns/format';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -14,7 +15,7 @@ const useStyles = makeStyles(theme => ({
     overflowX: 'auto',
   },
   table: {
-    minWidth: 650,
+    width: 850,
   },
 }));
 
@@ -30,31 +31,41 @@ const rows = [
   createData('Gingerbread', 356, 16.0, 49, 3.9),
 ];
 
-export default function SimpleTable() {
+const headers = [
+  'IP', 
+  'City', 
+  'Region', 
+  'Country', 
+  'Location', 
+  // 'Organization', 
+  'Created At'
+]
+
+const VisitsTable = props => {
   const classes = useStyles();
+  const { visits } = props
 
   return (
     <Paper className={classes.root}>
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
+            {(headers.map(header => <TableCell key={header}>{header}</TableCell> ))}
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map(row => (
-            <TableRow key={row.name}>
+          {visits.map(visit => (
+            <TableRow key={visit.id}>
               <TableCell component="th" scope="row">
-                {row.name}
+                {visit.ip}
               </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
+              <TableCell align="right">{visit.city}</TableCell>
+              <TableCell align="right">{visit.region}</TableCell>
+              <TableCell align="right">{visit.country}</TableCell>
+              <TableCell align="right">{visit.loc}</TableCell>
+              {/* <TableCell align="right">{visit.org}</TableCell> */}
+              <TableCell align="right">{format(visit.createdAt, 'MMM DD, YYYY')}</TableCell>
+              {/* <TableCell align="right">{visit.createdAt}</TableCell> */}
             </TableRow>
           ))}
         </TableBody>
@@ -62,3 +73,5 @@ export default function SimpleTable() {
     </Paper>
   );
 }
+
+export default VisitsTable;

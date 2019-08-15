@@ -71,7 +71,7 @@ class Analytics extends React.Component {
   }  
 
   render() {
-    const { classes } =  this.props;
+    const { link, classes } =  this.props;
     // console.log("linkFormDAta")
     // console.log(linkFormData)
 
@@ -114,7 +114,9 @@ class Analytics extends React.Component {
                   </Grid>
                 </form>
               </div>
-              <VisitsTable />
+              {(link.visits) && (
+                <VisitsTable visits={link.visits}/>
+              )}
             </Container>
           </div>
         </main>
