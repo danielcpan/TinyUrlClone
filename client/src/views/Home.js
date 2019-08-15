@@ -131,7 +131,7 @@ class Home extends React.Component {
                               />
                               <ListItemSecondaryAction>
                               <CopyToClipboard text={createdLinks[0].tinyUrl}
-                              onCopy={() => displaySnackbar('Copied to clipboard!')}>
+                              onCopy={() => displaySnackbar({ msg: 'Copied to clipboard!' })}>
                                 <Button 
                                   variant="outlined" 
                                   color="primary" 
@@ -168,7 +168,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   createLink: data => dispatch(createLink(data)),
-  displaySnackbar: msg => dispatch(displaySnackbar(msg))
+  displaySnackbar: data => dispatch(displaySnackbar(data))
 });
 
 export default connect(

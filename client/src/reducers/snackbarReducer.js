@@ -5,7 +5,9 @@ import {
 
 const initialState = {
   open: false,
-  msg: '',
+  duration: 2000,
+  variant: 'info',
+  msg: 'test',
 };
 
 export default (state = initialState, action) => {
@@ -14,7 +16,9 @@ export default (state = initialState, action) => {
       return {
         ...state,
         open: true,
-        msg: action.payload,
+        duration: action.payload.duration || 2000,
+        variant: action.payload.variant || 'info',
+        msg: action.payload.msg,
       };
     case HANDLE_CLOSE:
         return {

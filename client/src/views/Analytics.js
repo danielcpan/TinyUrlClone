@@ -44,19 +44,18 @@ class Analytics extends React.Component {
     e.preventDefault();
     const errors = []
     const { tinyUrl } = this.state
-    console.log(tinyUrl)
 
     if (tinyUrl.length === 0) {
       errors.push('Cannot be empty')
     }
 
-    if (URL_REGEX.test(tinyUrl) === false) {
-      errors.push('Invalid Url')
-    }
+    // if (URL_REGEX.test(tinyUrl) === false) {
+    //   errors.push('Invalid Url')
+    // }
 
-    if (SAME_URL_REGEX.test(tinyUrl) === false) {
-      errors.push('Search for a ____ link!')
-    }
+    // if (SAME_URL_REGEX.test(tinyUrl) === false) {
+    //   errors.push('Search for a ____ link!')
+    // }
 
     const tinyUrlId = tinyUrl.substr(tinyUrl.lastIndexOf('/') + 1);
 

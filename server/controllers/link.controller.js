@@ -30,6 +30,10 @@ module.exports = {
 
       const links = await query
 
+      if (links.length === 0) {
+        return next(new APIError('Link not found', httpStatus.NOT_FOUND));
+      }
+
       return res.json(links);
     } catch (err) {
       return next(err);

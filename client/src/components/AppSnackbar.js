@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 import { Snackbar } from '@material-ui/core';
 
 import { handleClose } from '../actions/snackbarActions';
+import AppSnackbarContent from './AppSnackbarContent';
 
  const AppSnackbar = props => {
-  const { open, msg, handleClose } = props
+  const { open, duration, variant, msg, handleClose } = props
 
   return (
     <div>
@@ -16,23 +17,32 @@ import { handleClose } from '../actions/snackbarActions';
           horizontal: 'center' 
         }}
         open={open}
-        autoHideDuration={2000}
+        autoHideDuration={duration}
         onClose={handleClose}
-        message={<span id="message-id">{msg}</span>}
-      />
+      >
+        <AppSnackbarContent
+          onClose={handleClose}
+          variant={variant}
+          message={msg}
+        />
+      </Snackbar>
     </div>
   );
 }
 
 AppSnackbar.propTypes = {
   open: Proptypes.bool.isRequired,
-  msg: Proptypes.string.isRequired,
-  handleClose: Proptypes.func.isRequired
+  duration: Proptypes.number.isRequired,
+  variant: Proptypes.string.isRequired,
+  msg: Proptypes.string.isRequired
 }
+
 
 const mapStateToProps = state => ({
   open: state.snackbars.open,
-  msg: state.snackbars.msg
+  duration: state.snackbars.duration,
+  variant: state.snackbars.variant,
+  msg: state.snackbars.msg,
 });
 
 const mapDispatchToProps = dispatch => ({

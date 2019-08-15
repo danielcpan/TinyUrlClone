@@ -3,10 +3,10 @@ import {
   HANDLE_CLOSE 
 } from '../constants/actionTypes';
 
-export const displaySnackbar = msg => async dispatch => {
-  dispatch({ type: DISPLAY_SNACKBAR, payload: msg });
+export const displaySnackbar = data => async dispatch => {
+  dispatch({ type: DISPLAY_SNACKBAR, payload: data });
 };
 
-export const handleClose = msg => async dispatch => {
+export const handleClose = () => async dispatch => {
   dispatch({ type: HANDLE_CLOSE });
 };

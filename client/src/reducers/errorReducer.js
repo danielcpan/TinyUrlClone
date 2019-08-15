@@ -6,7 +6,10 @@ export default (state = null, action) => { // eslint-disable-line no-unused-vars
   if (type === RESET_ERRORS) {
     return null;
   } if (error) {
-    return error;
+    return {
+      ...error,
+      type
+    };
   }
   return null; // Else reset if no errors
 };
