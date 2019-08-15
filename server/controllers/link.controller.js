@@ -8,7 +8,8 @@ const { PUBLIC_URL } = require('../config/config');
 module.exports = {
   get: async (req, res, next) => {
     try {
-      const link = await Link.findOne({ _id: req.params.linkId }).populate('visits');
+      const link = await Link.findOne({ _id: req.params.linkId }).populate('visits');      
+
       if (!link) {
         return next(new APIError('Link not found', httpStatus.NOT_FOUND));
       }
@@ -19,7 +20,16 @@ module.exports = {
   },
   list: async (req, res, next) => {
     try {
-      const links = await Link.find({});
+      const { tinyUrlId } = req.query;
+
+      const query = Link.find();
+
+      if (tinyUrlId) {
+        query.where({ tinyUrlId })
+      }
+
+      const links = await query
+
       return res.json(links);
     } catch (err) {
       return next(err);
@@ -35,12 +45,13 @@ module.exports = {
       }
 
       const nextSeq = await getNextSequence('linkId');
-      const tinyUrl = `${PUBLIC_URL}/${decimalToBaseN(nextSeq, 62)}`;
+      const tinyUrlId = decimalToBaseN(nextSeq, 62);
 
       link = new Link({
         ...req.body,
         index: nextSeq,
-        tinyUrl,        
+        tinyUrlId, 
+        tinyUrl: `${PUBLIC_URL}/${tinyUrlId}`,
       })
       
       await link.save();

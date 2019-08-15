@@ -1,4 +1,5 @@
 import React from 'react';
+import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -11,6 +12,10 @@ import {
 } from '@material-ui/core';
 
 import VisitsTable from '../components/VisitsTable';
+import { getLink } from '../actions/linkActions';
+
+const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
+const SAME_URL_REGEX = /^http:\/\/example\.com/;
 
 const styles = theme => ({
   heroContent: {
@@ -22,14 +27,43 @@ const styles = theme => ({
   },  
 });
 
+
 class Analytics extends React.Component {
   state = {
-    originalUrl: ''
+    linkFormData: {
+      originalUrl: ''
+    },
+    originalUrlErrors: []
   }
 
   onChange = (e) => {
     const { name, value } = e.target;
     this.setState({ [name]: value});
+  }  
+
+  onSubmit = e => {
+    e.preventDefault();
+    const { linkFormData } = this.state;
+    const errors = []
+
+    if (linkFormData.originalUrl.length === 0) {
+      this.setState()
+      errors.push('Cannot be empty')
+    }
+
+    if (URL_REGEX.test(linkFormData.originalUrl) === false) {
+      errors.push('Invalid Url')
+    }
+
+    if (SAME_URL_REGEX.test(linkFormData.originalUrl) === false) {
+      errors.push('Search for a ____ link!')
+    }
+
+    if (errors.length === 0) {
+      this.props.getLink(this.state.linkFormData)
+    }
+
+    this.setState({ originalUrlErrors: errors })
   }  
 
   render() {
@@ -45,25 +79,27 @@ class Analytics extends React.Component {
                 Analytics
               </Typography>
               <div className={classes.heroButtons}>
-                <Grid container spacing={2} justify="center">
-                  <Grid item xs={9}>
-                    <TextField
-                      id="originalUrl"
-                      type="url"
-                      label="Link to search"
-                      name="originalUrl"
-                      value={this.state.link}
-                      onChange={this.onChange}
-                      variant="outlined"
-                      fullWidth
-                    />
+                <form onSubmit={this.onSubmit}>
+                  <Grid container spacing={2} justify="center">
+                    <Grid item xs={9}>
+                      <TextField
+                        id="originalUrl"
+                        type="url"
+                        label="____ link to search"
+                        name="originalUrl"
+                        value={this.state.link}
+                        onChange={this.onChange}
+                        variant="outlined"
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={3}>
+                      <Button variant="outlined" color="primary" className={classes.shortenButton}>
+                        Get Analytics
+                      </Button>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={3}>
-                    <Button variant="outlined" color="primary" className={classes.shortenButton}>
-                      Get Analytics
-                    </Button>
-                  </Grid>
-                </Grid>
+                </form>
               </div>
               <VisitsTable />
             </Container>
@@ -74,4 +110,20 @@ class Analytics extends React.Component {
   }
 };
 
-export default withStyles(styles)(Analytics);
+Analytics.propTypes = {
+  getLink: Proptypes.func.isRequired
+};
+
+const mapStateToProps = state => ({
+  link: state.links.currentLink,
+});
+
+const mapDispatchToProps = dispatch => ({
+  getLink: data => dispatch(getLink(data)),
+  // displaySnackbar: msg => dispatch(displaySnackbar(msg))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withStyles(styles)(Analytics));

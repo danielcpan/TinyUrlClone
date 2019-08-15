@@ -18,7 +18,6 @@ export default (state = initialState, action) => {
     case CREATE_LINK:
       return {
         ...state,
-        // createdLinks: [...state.createdLinks, action.payload]
         createdLinks: [action.payload, ...state.createdLinks]
       }
     default:

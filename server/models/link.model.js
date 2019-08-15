@@ -15,6 +15,10 @@ const LinkSchema = new mongoose.Schema({
     unique: true,
     index: true,
   },
+  tinyUrlId: {
+    type: String,
+    unique: true
+  },  
   tinyUrl: {
     type: String,
   },

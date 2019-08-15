@@ -9,13 +9,20 @@ describe('## Link APIs', () => {
   before(async () => {
     await clearDatabase();
 
-    link = await Link.create({
+    // link = await Link.create({
+    //   index: await getNextSequence('linkId'),
+    //   originalUrl: 'https://iAmaReallyLongTestUrl.com/',
+    // });
+    const data = {
       index: await getNextSequence('linkId'),
       originalUrl: 'https://iAmaReallyLongTestUrl.com/',
-    });
+    };
+    const response = await request(app).post('/api/links').send(data);
+    link = response.body;
+
   });
 
-  describe('# GET /api/links/:chatId', () => {
+  describe('# GET /api/links/:linkId', () => {
     it('should get link details', async () => {
       const response = await request(app).get(`/api/links/${link._id}`);
 
@@ -32,6 +39,15 @@ describe('## Link APIs', () => {
       expect(response.body).to.have.lengthOf(1);
     });
   });
+
+  describe('# GET /api/links?tinyUrlId=', () => {
+    it('should get all links', async () => {
+      const response = await request(app).get(`/api/links?tinyUrlId=${link.tinyUrlId}`);
+
+      expect(response.status).to.equal(httpStatus.OK);
+      expect(response.body).to.have.lengthOf(1);
+    });
+  });  
 
   describe('# POST /api/links', () => {
     it('should create new link', async () => {
