@@ -1,5 +1,5 @@
 // LINK_ACTIONS
-export const GET_LINK = 'GET_LINK';
+export const GET_LINK_ANALYTICS = 'GET_LINK_ANALYTICS';
 export const CREATE_LINK = 'CREATE_LINK';
 
 // SNACKBAR_ACTIONS

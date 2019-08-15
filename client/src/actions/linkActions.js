@@ -1,20 +1,20 @@
 import axios from 'axios';
 
 import { 
-  GET_LINK, 
+  GET_LINK_ANALYTICS, 
   CREATE_LINK 
 } from '../constants/actionTypes';
 
-export const getLink = id => async dispatch => {
+export const getLinkAnalytics = tinyUrlId => async dispatch => {
   try {
-    const response = await axios.get(`/api/links/${id}`);
+    const response = await axios.get(`/api/links?tinyUrlId=${tinyUrlId}`);
     dispatch({
-      type: GET_LINK,
+      type: GET_LINK_ANALYTICS,
       payload: response.data,
     });
   } catch (err) {
     dispatch({
-      type: 'GET_LINK_ERROR',
+      type: 'GET_LINK_ANALYTICS_ERROR',
       error: err.response.data,
     });
   }

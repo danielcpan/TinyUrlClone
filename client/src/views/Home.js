@@ -106,9 +106,9 @@ class Home extends React.Component {
                         value={this.state.linkFormData.link}
                         onChange={this.onChange}
                         variant="outlined"
+                        fullWidth
                         error={this.state.originalUrlErrors.length > 0}
                         helperText={(this.state.originalUrlErrors) ? this.state.originalUrlErrors[0] : ''}
-                        fullWidth
                       />
                     </Grid>
                     <Grid item xs={3}>

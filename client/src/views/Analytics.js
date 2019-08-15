@@ -12,10 +12,11 @@ import {
 } from '@material-ui/core';
 
 import VisitsTable from '../components/VisitsTable';
-import { getLink } from '../actions/linkActions';
+import { getLinkAnalytics } from '../actions/linkActions';
 
 const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
 const SAME_URL_REGEX = /^http:\/\/example\.com/;
+// const TINY_URL_ID_REGEX = /\/([^\/]+)\/?$/;
 
 const styles = theme => ({
   heroContent: {
@@ -30,10 +31,8 @@ const styles = theme => ({
 
 class Analytics extends React.Component {
   state = {
-    linkFormData: {
-      originalUrl: ''
-    },
-    originalUrlErrors: []
+    tinyUrl: '',
+    tinyUrlErrors: []
   }
 
   onChange = (e) => {
@@ -43,31 +42,39 @@ class Analytics extends React.Component {
 
   onSubmit = e => {
     e.preventDefault();
-    const { linkFormData } = this.state;
     const errors = []
+    const { tinyUrl } = this.state
+    console.log(tinyUrl)
 
-    if (linkFormData.originalUrl.length === 0) {
-      this.setState()
+    if (tinyUrl.length === 0) {
       errors.push('Cannot be empty')
     }
 
-    if (URL_REGEX.test(linkFormData.originalUrl) === false) {
+    if (URL_REGEX.test(tinyUrl) === false) {
       errors.push('Invalid Url')
     }
 
-    if (SAME_URL_REGEX.test(linkFormData.originalUrl) === false) {
+    if (SAME_URL_REGEX.test(tinyUrl) === false) {
       errors.push('Search for a ____ link!')
     }
 
-    if (errors.length === 0) {
-      this.props.getLink(this.state.linkFormData)
+    const tinyUrlId = tinyUrl.substr(tinyUrl.lastIndexOf('/') + 1);
+
+    if (tinyUrlId.length !== 6) {
+      errors.push('____ links must have 6 characters as the id')
     }
 
-    this.setState({ originalUrlErrors: errors })
+    if (errors.length === 0) {
+      this.props.getLinkAnalytics(tinyUrlId)
+    }
+
+    this.setState({ tinyUrlErrors: errors })
   }  
 
   render() {
     const { classes } =  this.props;
+    // console.log("linkFormDAta")
+    // console.log(linkFormData)
 
     return (
       <>
@@ -83,18 +90,25 @@ class Analytics extends React.Component {
                   <Grid container spacing={2} justify="center">
                     <Grid item xs={9}>
                       <TextField
-                        id="originalUrl"
+                        id="tinyUrl"
                         type="url"
                         label="____ link to search"
-                        name="originalUrl"
-                        value={this.state.link}
+                        name="tinyUrl"
+                        value={this.state.tinyUrl}
                         onChange={this.onChange}
                         variant="outlined"
                         fullWidth
+                        error={this.state.tinyUrlErrors.length > 0}
+                        helperText={(this.state.tinyUrlErrors) ? this.state.tinyUrlErrors[0] : ''}
                       />
                     </Grid>
                     <Grid item xs={3}>
-                      <Button variant="outlined" color="primary" className={classes.shortenButton}>
+                      <Button 
+                        variant="outlined" 
+                        color="primary" 
+                        className={classes.shortenButton}
+                        onClick={this.onSubmit}
+                      >
                         Get Analytics
                       </Button>
                     </Grid>
@@ -111,7 +125,7 @@ class Analytics extends React.Component {
 };
 
 Analytics.propTypes = {
-  getLink: Proptypes.func.isRequired
+  getLinkAnalytics: Proptypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -119,8 +133,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getLink: data => dispatch(getLink(data)),
-  // displaySnackbar: msg => dispatch(displaySnackbar(msg))
+  getLinkAnalytics: tinyUrId => dispatch(getLinkAnalytics(tinyUrId)),
 });
 
 export default connect(

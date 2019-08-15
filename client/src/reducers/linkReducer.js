@@ -1,5 +1,5 @@
 import { 
-  GET_LINK, 
+  GET_LINK_ANALYTICS, 
   CREATE_LINK 
 } from '../constants/actionTypes';
 
@@ -10,7 +10,7 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case GET_LINK:
+    case GET_LINK_ANALYTICS:
       return {
         ...state,
         currentLink: action.payload,
