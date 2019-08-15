@@ -3,6 +3,7 @@ import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { 
   Button, 
   Grid, 
@@ -13,10 +14,13 @@ import {
   ListItem,
   ListItemText,
   ListItemSecondaryAction,
-  IconButton
 } from '@material-ui/core';
 
 import { createLink } from '../actions/linkActions';
+import { displaySnackbar } from '../actions/snackbarActions';
+
+const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
+const SAME_URL_REGEX = /^http:\/\/example\.com/;
 
 const styles = theme => ({
   heroContent: {
@@ -26,7 +30,7 @@ const styles = theme => ({
     width: '100%',
     lineHeight: 3.2,
   },
-  demo: {
+  list: {
     backgroundColor: theme.palette.background.paper,
   },  
 });
@@ -34,8 +38,9 @@ const styles = theme => ({
 class Home extends React.Component {
   state = {
     linkFormData: {
-      originalUrl: ''  
-    }
+      originalUrl: ''
+    },
+    originalUrlErrors: []
   }
 
   onChange = (e) => {
@@ -50,16 +55,32 @@ class Home extends React.Component {
 
   onSubmit = e => {
     e.preventDefault();
-    if (this.state.linkFormData.originalUrl != "") {
-      this.props.createLink(this.state.linkFormData)
-    } else {
-      console.log("cant be empty ")
+    const { linkFormData } = this.state;
+    const errors = []
+
+    if (linkFormData.originalUrl.length === 0) {
+      this.setState()
+      errors.push('Cannot be empty')
     }
+
+    if (URL_REGEX.test(linkFormData.originalUrl) === false) {
+      errors.push('Invalid Url')
+    }
+
+    if (SAME_URL_REGEX.test(linkFormData.originalUrl)) {
+      errors.push('That is already a ____ link!')
+    }
+
+    if (errors.length === 0) {
+      this.props.createLink(this.state.linkFormData)
+    }
+
+    this.setState({ originalUrlErrors: errors })
   }
 
 
   render() {
-    const { createdLinks, classes } =  this.props;
+    const { createdLinks, displaySnackbar, classes } =  this.props;
 
     return (
       <>
@@ -85,6 +106,8 @@ class Home extends React.Component {
                         value={this.state.linkFormData.link}
                         onChange={this.onChange}
                         variant="outlined"
+                        error={this.state.originalUrlErrors.length > 0}
+                        helperText={(this.state.originalUrlErrors) ? this.state.originalUrlErrors[0] : ''}
                         fullWidth
                       />
                     </Grid>
@@ -100,21 +123,25 @@ class Home extends React.Component {
                     </Grid>
                     <Grid item xs={12}>
                       {(createdLinks[0]) && (
-                        <div className={classes.demo}>
-                          <List dense>
-                            {/* {generate( */}
-                              <ListItem>
-                                <ListItemText
-                                  primary={(createdLinks[0]) ? createdLinks[0].tinyUrl : ''}
-                                />
-                                <ListItemSecondaryAction>
-                                  {/* Copy */}
-                                  <Button variant="outlined" color="primary" className={classes.button}>
-                                    Copy
-                                  </Button>
-                                </ListItemSecondaryAction>
-                              </ListItem>
-                            {/* )} */}
+                        <div className={classes.list}>
+                          <List dense style={{ border: "1px solid #b2b8c3", borderRadius: '5px'}}>
+                            <ListItem>
+                              <ListItemText
+                                primary={createdLinks[0].tinyUrl}
+                              />
+                              <ListItemSecondaryAction>
+                              <CopyToClipboard text={createdLinks[0].tinyUrl}
+                              onCopy={() => displaySnackbar('Copied to clipboard!')}>
+                                <Button 
+                                  variant="outlined" 
+                                  color="primary" 
+                                  className={classes.button}
+                                >
+                                  Copy
+                                </Button>
+                                </CopyToClipboard>
+                              </ListItemSecondaryAction>
+                            </ListItem>
                           </List>
                         </div>
                       )}
@@ -140,7 +167,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  createLink: data => dispatch(createLink(data))
+  createLink: data => dispatch(createLink(data)),
+  displaySnackbar: msg => dispatch(displaySnackbar(msg))
 });
 
 export default connect(

@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
   link: {
     margin: theme.spacing(1, 1.5),
     textDecoration: 'none',
-    color: 'black'
+    color: 'white'
   },    
 }));
 
@@ -21,8 +21,8 @@ const AppToolBar = () => {
   const classes = useStyles();
 
   return (
-    <AppBar position="static" color="default" elevation={0} className={classes.appBar}>
-      <Toolbar className={classes.toolbar}>
+    <AppBar position="static" color="primary" elevation={0} className={classes.appBar}>
+      <Toolbar variant="dense" className={classes.toolbar}>
         <Typography variant="h5" color="inherit" noWrap className={classes.toolbarTitle}>
           <Link to={'/'} className={classes.link}>
             Bitly Clone
