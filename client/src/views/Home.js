@@ -1,35 +1,8 @@
 import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
-// import CameraIcon from '@material-ui/icons/PhotoCamera';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Grid from '@material-ui/core/Grid';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Link from '@material-ui/core/Link';
-import { TextField } from '@material-ui/core';
-
-const Copyright = () => (
-  <Typography variant="body2" color="textSecondary" align="center">
-    {'Copyright © '}
-    <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-    </Link>
-    {' '}
-    {new Date().getFullYear()}
-    {'. Built with '}
-    <Link color="inherit" href="https://material-ui.com/">
-        Material-UI.
-    </Link>
-  </Typography>
-);
+import { Grid, Container, TextField, Typography } from '@material-ui/core';
 
 const styles = theme => ({
   icon: {
@@ -52,7 +25,7 @@ const styles = theme => ({
 
 class Home extends React.Component {
   state = {
-    link: ''
+    originalUrl: ''
   }
 
   onChange = (e) => {
@@ -60,22 +33,13 @@ class Home extends React.Component {
     this.setState({ [name]: value});
   }  
 
-
   render() {
     const { classes } =  this.props;
 
     return (
       <>
         <CssBaseline />
-        <AppBar position="relative">
-          <Toolbar>
-            <Typography variant="h6" color="inherit" noWrap>
-              TinyUrlClone
-            </Typography>
-          </Toolbar>
-        </AppBar>
         <main>
-          {/* Hero unit */}
           <div className={classes.heroContent}>
             <Container maxWidth="md">
               <Typography component="h1" variant="h3" align="center" color="textPrimary" gutterBottom>
