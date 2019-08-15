@@ -1,6 +1,7 @@
 import { 
   GET_LINK_ANALYTICS, 
-  CREATE_LINK 
+  RESET_CURRENT_LINK,
+  CREATE_LINK,
 } from '../constants/actionTypes';
 
 const initialState = {
@@ -15,6 +16,11 @@ export default (state = initialState, action) => {
         ...state,
         currentLink: action.payload,
       };
+    case RESET_CURRENT_LINK:
+        return {
+          ...state,
+          currentLink: {}
+        }      
     case CREATE_LINK:
       return {
         ...state,

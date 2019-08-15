@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 
 import VisitsTable from '../components/VisitsTable';
-import { getLinkAnalytics } from '../actions/linkActions';
+import { getLinkAnalytics, resetCurrentLink } from '../actions/linkActions';
 
 const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
 const SAME_URL_REGEX = /^http:\/\/example\.com/;
@@ -33,6 +33,10 @@ class Analytics extends React.Component {
   state = {
     tinyUrl: '',
     tinyUrlErrors: []
+  }
+
+  componentDidMount() {
+    this.props.resetCurrentLink()
   }
 
   onChange = (e) => {
@@ -68,12 +72,10 @@ class Analytics extends React.Component {
     }
 
     this.setState({ tinyUrlErrors: errors })
-  }  
+  }
 
   render() {
     const { link, classes } =  this.props;
-    // console.log("linkFormDAta")
-    // console.log(linkFormData)
 
     return (
       <>
@@ -135,6 +137,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getLinkAnalytics: tinyUrId => dispatch(getLinkAnalytics(tinyUrId)),
+  resetCurrentLink: () => dispatch(resetCurrentLink())
 });
 
 export default connect(

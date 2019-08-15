@@ -37,13 +37,14 @@ const headers = [
   'Region', 
   'Country', 
   'Location', 
+  'Unique',
   // 'Organization', 
   'Created At'
 ]
 
 const VisitsTable = props => {
   const classes = useStyles();
-  const { visits } = props
+  const { visits = [] } = props
 
   return (
     <Paper className={classes.root}>
@@ -63,6 +64,7 @@ const VisitsTable = props => {
               <TableCell align="right">{visit.region}</TableCell>
               <TableCell align="right">{visit.country}</TableCell>
               <TableCell align="right">{visit.loc}</TableCell>
+              <TableCell align="right">{(visit.isUnique) ? 'Yes' : 'No'}</TableCell>
               {/* <TableCell align="right">{visit.org}</TableCell> */}
               <TableCell align="right">{format(visit.createdAt, 'MMM DD, YYYY')}</TableCell>
               {/* <TableCell align="right">{visit.createdAt}</TableCell> */}

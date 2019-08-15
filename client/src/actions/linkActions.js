@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import { 
   GET_LINK_ANALYTICS, 
+  RESET_CURRENT_LINK,
   CREATE_LINK,
   DISPLAY_SNACKBAR
 } from '../constants/actionTypes';
@@ -27,6 +28,10 @@ export const getLinkAnalytics = tinyUrlId => async dispatch => {
       error: err.response.data,
     });
   }
+};
+
+export const resetCurrentLink = () => async dispatch => {
+  dispatch({ type: RESET_CURRENT_LINK });
 };
 
 export const createLink = data => async dispatch => {
