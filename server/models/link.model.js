@@ -36,7 +36,7 @@ const LinkSchema = new mongoose.Schema({
     default: 0,
   },
   visits: [{
-    type: mongoose.Schema.Types.ObjectId,
+    type: mongoose.Types.ObjectId,
     ref: 'Visit',
   }],
 }, {

@@ -1,13 +1,15 @@
 const mongoose = require('mongoose');
 
 const VisitSchema = new mongoose.Schema({
-  link: {
-    type: mongoose.Schema.Types.ObjectId,
+  linkId: {
+    // type: mongoose.Schema.Types.ObjectId,
+    type: mongoose.Types.ObjectId,
     ref: 'Link',
   },
   isUnique: {
     type: Boolean,
-    required: true
+    required: true,
+    default: false,
   },
   ip: {
     type: String,
@@ -15,23 +17,18 @@ const VisitSchema = new mongoose.Schema({
   },
   city: {
     type: String,
-    required: true,
   },
   region: {
     type: String,
-    required: true,
   },
   country: {
     type: String,
-    required: true,
   },
   loc: {
     type: String,
-    required: true,
   },
   org: {
     type: String,
-    required: true,
   },
 }, {
   timestamps: true

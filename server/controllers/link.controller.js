@@ -2,6 +2,7 @@ const httpStatus = require('http-status');
 
 const { decimalToBaseN, getNextSequence } = require('../utils/mongoose.utils');
 const Link = require('../models/link.model');
+const Visit = require('../models/visit.model');
 const APIError = require('../utils/APIError.utils');
 const { PUBLIC_URL } = require('../config/config');
 
@@ -20,19 +21,7 @@ module.exports = {
   },
   list: async (req, res, next) => {
     try {
-      const { tinyUrlId } = req.query;
-
-      const query = Link.find();
-
-      if (tinyUrlId) {
-        query.where({ tinyUrlId })
-      }
-
-      const links = await query.populate('visits')
-
-      if (links.length === 0) {
-        return next(new APIError('Link not found', httpStatus.NOT_FOUND));
-      }
+      const links = await Link.find({});
 
       return res.json(links);
     } catch (err) {
@@ -83,6 +72,7 @@ module.exports = {
   delete: async (req, res, next) => {
     try {
       const link = await Link.findOne({ _id: req.params.linkId })
+
       if (!link) {
         return next(new APIError('Link not found', httpStatus.NOT_FOUND));
       }
@@ -92,4 +82,57 @@ module.exports = {
       return next(err);
     }
   },
+  getAnalytics: async (req, res, next) => {
+    try {
+      const link = await Link.findOne({ tinyUrlId: req.params.tinyUrlId })
+      .populate({path: 'visits', options: { sort: { 'createdAt': -1 } } })
+      .lean()
+
+      const topThreeCountries = await Visit.aggregate([
+        { $match: { linkId: link._id }},
+        { $group: { 
+          _id: "$country", 
+          code: { $first: "$country"}, 
+          count: { $sum: 1}
+        }},
+        { $sort : { count : -1} },
+        { $limit : 3 }
+      ])
+
+      const topCountry = topThreeCountries[0]
+
+      // console.log(mostFromCountry)
+      console.log("First")
+      console.log(link)
+      link.topCountry = topCountry
+      console.log("Second")
+      console.log(link)
+
+      // console.log(link.visits.aggregate({ $group: { _id: "$country", count: { $sum: 1}}}))
+
+      if (!link) {
+        return next(new APIError('Link not found', httpStatus.NOT_FOUND));
+      }
+      return res.json(link)
+    } catch (err) {
+      return next(err)
+    }
+  }
 };
+
+// db.visits.aggregate([{ $match: { linkId: ObjectId("5d562fd72b0bec4b59b3caa7") }}])
+// db.visits.aggregate([
+//   { $match: { linkId: ObjectId("5d562fd72b0bec4b59b3caa7")}},
+//   { $group: { 
+//     _id: "$country", 
+//     country: { $first: "$country"}, 
+//     count: { $sum: 1}
+//   }}
+// ])
+
+
+// db.visits.aggregate([{ $match: { linkId: '5d561c6662aed448b9d85cff'}}])
+
+// // db.visits.aggregate({ $group: { _id: "linkId", country: { $first: "$country"}, count: { $sum: 1}}})
+
+// // // db.visits.aggregate({ $group: { _id: "$_id", linkId: { $first: "$linkId }", country: { $first: "$country"}, count: { $sum: 1}}})

@@ -18,7 +18,7 @@ describe('## TinyUrl APIs', () => {
 
   describe('# GET /:tinyUrl', () => {
     it('should redirect to original link', async () => {
-      const response = await request(app).get(`/${Link.getTinyUrlEndPoint(link.index)}`);
+      const response = await request(app).get(`/${link.tinyUrlId}`);
 
       expect(response.status).to.equal(httpStatus.FOUND);
     });

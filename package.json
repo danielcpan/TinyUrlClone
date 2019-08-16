@@ -10,7 +10,7 @@
     "lint": "./node_modules/.bin/eslint --fix server",
     "start": "nodemon server/server.js",
     "test": "NODE_ENV=test node_modules/.bin/mocha --opts server/mocha.opts --exit",
-    "tests": "NODE_ENV=test node_modules/.bin/mocha --opts server/mocha.opts server/tests/*.js --exit"
+    "tests": "node_modules/.bin/mocha --opts server/mocha.opts server/tests/*.js --exit"
   },
   "repository": {
     "type": "git",

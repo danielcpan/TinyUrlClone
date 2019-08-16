@@ -4,12 +4,13 @@ const axios = require('axios');
 const Link = require('../models/link.model');
 const Visit = require('../models/visit.model');
 const APIError = require('../utils/APIError.utils');
-const { PUBLIC_URL, IP_INFO_TOKEN } = require('../config/config');
+const { IP_INFO_TOKEN } = require('../config/config');
 
 module.exports = {
   get: async (req, res, next) => {
     try {
-      const link = await Link.findOne({ tinyUrl: `${PUBLIC_URL}/${req.params.tinyUrl}` });
+      const link = await Link.findOne({ tinyUrlId: req.params.tinyUrlId });
+
       if (!link) {
         return next(new APIError('Link not found', httpStatus.NOT_FOUND));
       }
@@ -18,21 +19,24 @@ module.exports = {
 
       // TEST IP
       if (process.env.NODE_ENV === 'test' || req.ip === '::1' || req.ip === '::ffff:127.0.0.1') {
-        ip = '117.141.106.236';
+        ip = '78.22.241.57';
+        // ip = '172.146.200.120'
       }
       const response = await axios.get(`https://ipinfo.io/${ip}`, {
         headers: { Authorization: `Bearer ${IP_INFO_TOKEN}` },
       });
 
-      let visit = await Visit.findOne({ ip: response.data.ip });
+      const visit = new Visit({ ...response.data, linkId: link._id});
+
+      let searchedVisit = await Visit.findOne({ ip: visit.ip });
 
       // IP does not exists, is unique
-      if (!visit) {
-        visit = new Visit({ ...response.data, link: link._id, isUnique: true });
-        await visit.save()
+      if (!searchedVisit) {
+        visit.isUnique = true;
         link.uniqueClicks += 1;
       }
 
+      await visit.save()
       link.totalClicks += 1;
       link.visits.push(visit);
       await link.save();

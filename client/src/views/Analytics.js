@@ -96,7 +96,7 @@ class Analytics extends React.Component {
               <div className={classes.heroButtons}>
                 <form onSubmit={this.onSubmit}>
                   <Grid container spacing={2} justify="center">
-                    <Grid item xs={7} sm={9}>
+                    <Grid item xs={7} sm={8} md={9}>
                       <TextField
                         id="tinyUrl"
                         type="url"
@@ -110,7 +110,7 @@ class Analytics extends React.Component {
                         helperText={(this.state.tinyUrlErrors) ? this.state.tinyUrlErrors[0] : ''}
                       />
                     </Grid>
-                    <Grid item xs={5} sm={3}>
+                    <Grid item xs={5} sm={4} md={3}>
                       <Button 
                         variant="outlined" 
                         color="primary" 

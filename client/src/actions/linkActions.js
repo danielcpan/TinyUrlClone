@@ -9,10 +9,10 @@ import {
 
 export const getLinkAnalytics = tinyUrlId => async dispatch => {
   try {
-    const response = await axios.get(`/api/links?tinyUrlId=${tinyUrlId}`);    
+    const response = await axios.get(`/api/links/analytics/${tinyUrlId}`);
     dispatch({
       type: GET_LINK_ANALYTICS,
-      payload: response.data[0],
+      payload: response.data,
     });
   } catch (err) {
     const snackbarPayload = {

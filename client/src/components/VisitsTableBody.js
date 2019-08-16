@@ -36,16 +36,16 @@ const VisitsTableBody = props => {
     <TableBody>
       {stableSort(visits, getSorting(order, orderBy))
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-        .map(visit => (
+        .map((visit, idx) => (
           <TableRow
             hover
-            key={visit._id}
+            key={idx}
           >
             <TableCell component="th" scope="row">{visit.ip}</TableCell>
-            <TableCell align="left">{visit.city}</TableCell>
-            <TableCell align="left">{visit.region}</TableCell>
-            <TableCell align="left">{visit.country}</TableCell>
-            <TableCell align="left">{visit.loc}</TableCell>
+            <TableCell align="left">{visit.city || '*Unknown*'}</TableCell>
+            <TableCell align="left">{visit.region || '*Unknown*'}</TableCell>
+            <TableCell align="left">{visit.country || '*Unknown*'}</TableCell>
+            <TableCell align="left">{visit.loc || '*Unknown*'}</TableCell>
             <TableCell align="left">{(visit.isUnique) ? 'Yes' : 'No'}</TableCell>
             <TableCell align="left">{format(visit.createdAt, 'MMM DD, YYYY')}</TableCell>
           </TableRow>

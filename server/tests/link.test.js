@@ -40,14 +40,14 @@ describe('## Link APIs', () => {
     });
   });
 
-  describe('# GET /api/links?tinyUrlId=', () => {
-    it('should get all links', async () => {
-      const response = await request(app).get(`/api/links?tinyUrlId=${link.tinyUrlId}`);
+  describe('# GET /api/links/analytics/:tinyUrlId', () => {
+    it('should get link analytics', async () => {
+      const response = await request(app).get(`/api/links/analytics/${link.tinyUrlId}`);
 
       expect(response.status).to.equal(httpStatus.OK);
-      expect(response.body).to.have.lengthOf(1);
+      expect(response.body.tinyUrlId).to.equal(link.tinyUrlId);
     });
-  });  
+  });
 
   describe('# POST /api/links', () => {
     it('should create new link', async () => {

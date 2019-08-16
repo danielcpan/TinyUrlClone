@@ -1,5 +1,6 @@
 import React from 'react';
 import Proptypes from 'prop-types';
+import format from 'date-fns/format';
 import { amber, green } from '@material-ui/core/colors';
 import { 
   Grid, 
@@ -9,6 +10,7 @@ import {
 import TouchAppIcon from '@material-ui/icons/TouchAppOutlined'
 import PermIdentityIcon from '@material-ui/icons/PermIdentity'
 import PlaceIcon from '@material-ui/icons/PlaceOutlined';
+import EventIcon from '@material-ui/icons/EventOutlined'
 
 import CardSummary from './CardSummary';
 
@@ -40,7 +42,7 @@ const DashboardSummary = props => {
         <Grid item xs={12} sm={6} md={3}>
           <CardSummary 
             title={'Most from: '}
-            body={link.uniqueClicks}
+            body={link.topCountry.code}
             icon={<PlaceIcon />}
             color={green[600]}
           />
@@ -49,8 +51,8 @@ const DashboardSummary = props => {
         <Grid item xs={12} sm={6} md={3}>
           <CardSummary 
             title={'Last visit: '}
-            body={link.uniqueClicks}
-            icon={<PermIdentityIcon />}
+            body={format(link.visits[0].createdAt, 'MMM DD, YYYY')}
+            icon={<EventIcon />}
             color="#d32f2f"
           />
         </Grid>
