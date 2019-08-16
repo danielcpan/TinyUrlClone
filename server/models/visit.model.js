@@ -31,7 +31,7 @@ const VisitSchema = new mongoose.Schema({
     type: String,
   },
 }, {
-  timestamps: true
+  timestamps: true,
 });
 
 module.exports = mongoose.model('Visit', VisitSchema);

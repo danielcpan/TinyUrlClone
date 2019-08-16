@@ -26,9 +26,9 @@ module.exports = {
         headers: { Authorization: `Bearer ${IP_INFO_TOKEN}` },
       });
 
-      const visit = new Visit({ ...response.data, linkId: link._id});
+      const visit = new Visit({ ...response.data, linkId: link._id });
 
-      let searchedVisit = await Visit.findOne({ ip: visit.ip });
+      const searchedVisit = await Visit.findOne({ ip: visit.ip });
 
       // IP does not exists, is unique
       if (!searchedVisit) {
@@ -36,7 +36,7 @@ module.exports = {
         link.uniqueClicks += 1;
       }
 
-      await visit.save()
+      await visit.save();
       link.totalClicks += 1;
       link.visits.push(visit);
       await link.save();

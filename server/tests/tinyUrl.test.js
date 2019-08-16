@@ -1,6 +1,5 @@
 const httpStatus = require('http-status');
 const app = require('../app');
-const Link = require('../models/link.model');
 const { clearDatabase } = require('../utils/mongoose.utils');
 
 describe('## TinyUrl APIs', () => {

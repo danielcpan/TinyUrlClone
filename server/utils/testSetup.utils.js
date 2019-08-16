@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { expect } = require('chai')
+const { expect } = require('chai');
 const request = require('supertest');
 
 before(async () => {

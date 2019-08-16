@@ -13,6 +13,6 @@ router.route('/:linkId')
   .delete(linkController.delete);
 
 router.route('/analytics/:tinyUrlId')
-  .get(linkController.getAnalytics)
+  .get(linkController.getAnalytics);
 
 module.exports = router;

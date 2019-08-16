@@ -30,11 +30,11 @@ module.exports = {
   },
   create: async (req, res, next) => {
     try {
-      let link = await Link.findOne({ originalUrl: req.body.originalUrl })
+      let link = await Link.findOne({ originalUrl: req.body.originalUrl });
 
       // If already exists, return existing link
       if (link) {
-        return res.json(link)
+        return res.json(link);
       }
 
       const nextSeq = await getNextSequence('linkId');
@@ -43,10 +43,10 @@ module.exports = {
       link = new Link({
         ...req.body,
         index: nextSeq,
-        tinyUrlId, 
+        tinyUrlId,
         tinyUrl: `${PUBLIC_URL}/${tinyUrlId}`,
-      })
-      
+      });
+
       await link.save();
       return res.status(httpStatus.CREATED).json(link);
     } catch (err) {
@@ -55,14 +55,14 @@ module.exports = {
   },
   update: async (req, res, next) => {
     try {
-      const link = await Link.findOne({ _id: req.params.linkId })
+      const link = await Link.findOne({ _id: req.params.linkId });
 
       if (!link) {
         return next(new APIError('Link not found', httpStatus.NOT_FOUND));
       }
 
-      link.set(req.body)
-      await link.save()
+      link.set(req.body);
+      await link.save();
 
       return res.status(httpStatus.OK).json(link);
     } catch (err) {
@@ -71,12 +71,12 @@ module.exports = {
   },
   delete: async (req, res, next) => {
     try {
-      const link = await Link.findOne({ _id: req.params.linkId })
+      const link = await Link.findOne({ _id: req.params.linkId });
 
       if (!link) {
         return next(new APIError('Link not found', httpStatus.NOT_FOUND));
       }
-      await link.remove()
+      await link.remove();
       return res.status(httpStatus.OK).json({ deleted: true });
     } catch (err) {
       return next(err);
@@ -85,54 +85,33 @@ module.exports = {
   getAnalytics: async (req, res, next) => {
     try {
       const link = await Link.findOne({ tinyUrlId: req.params.tinyUrlId })
-      .populate({path: 'visits', options: { sort: { 'createdAt': -1 } } })
-      .lean()
+        .populate({ path: 'visits', options: { sort: { createdAt: -1 } } })
+        .lean();
 
       const topThreeCountries = await Visit.aggregate([
-        { $match: { linkId: link._id }},
-        { $group: { 
-          _id: "$country", 
-          code: { $first: "$country"}, 
-          count: { $sum: 1}
-        }},
-        { $sort : { count : -1} },
-        { $limit : 3 }
-      ])
+        { $match: { linkId: link._id } },
+        {
+          $group: {
+            _id: '$country',
+            code: { $first: '$country' },
+            count: { $sum: 1 },
+          },
+        },
+        { $sort: { count: -1 } },
+        { $limit: 3 },
+      ]);
 
-      const topCountry = topThreeCountries[0]
+      const topCountry = topThreeCountries[0];
 
-      // console.log(mostFromCountry)
-      console.log("First")
-      console.log(link)
-      link.topCountry = topCountry
-      console.log("Second")
-      console.log(link)
-
-      // console.log(link.visits.aggregate({ $group: { _id: "$country", count: { $sum: 1}}}))
+      // Temporary fields
+      link.topCountry = topCountry;
 
       if (!link) {
         return next(new APIError('Link not found', httpStatus.NOT_FOUND));
       }
-      return res.json(link)
+      return res.json(link);
     } catch (err) {
-      return next(err)
+      return next(err);
     }
-  }
+  },
 };
-
-// db.visits.aggregate([{ $match: { linkId: ObjectId("5d562fd72b0bec4b59b3caa7") }}])
-// db.visits.aggregate([
-//   { $match: { linkId: ObjectId("5d562fd72b0bec4b59b3caa7")}},
-//   { $group: { 
-//     _id: "$country", 
-//     country: { $first: "$country"}, 
-//     count: { $sum: 1}
-//   }}
-// ])
-
-
-// db.visits.aggregate([{ $match: { linkId: '5d561c6662aed448b9d85cff'}}])
-
-// // db.visits.aggregate({ $group: { _id: "linkId", country: { $first: "$country"}, count: { $sum: 1}}})
-
-// // // db.visits.aggregate({ $group: { _id: "$_id", linkId: { $first: "$linkId }", country: { $first: "$country"}, count: { $sum: 1}}})

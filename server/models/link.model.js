@@ -1,13 +1,12 @@
 const mongoose = require('mongoose');
-const { decimalToBaseN } = require('../utils/mongoose.utils');
 
-const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
+const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/;
 const SAME_URL_REGEX = /^http:\/\/example\.com/;
 
 const manyValidators = [
   { validator: (v) => URL_REGEX.test(v), msg: 'Invalid Url' },
   { validator: (v) => !SAME_URL_REGEX.test(v), msg: 'That is already a ____ link!' },
-]
+];
 
 const LinkSchema = new mongoose.Schema({
   index: {
@@ -17,15 +16,15 @@ const LinkSchema = new mongoose.Schema({
   },
   tinyUrlId: {
     type: String,
-    unique: true
-  },  
+    unique: true,
+  },
   tinyUrl: {
     type: String,
   },
   originalUrl: {
     type: String,
     required: true,
-    validate: manyValidators
+    validate: manyValidators,
   },
   uniqueClicks: {
     type: Number,
@@ -40,13 +39,7 @@ const LinkSchema = new mongoose.Schema({
     ref: 'Visit',
   }],
 }, {
-  timestamps: true
+  timestamps: true,
 });
-
-LinkSchema.statics = {
-  getTinyUrlEndPoint(index) {
-    return decimalToBaseN(index, 62);
-  },
-};
 
 module.exports = mongoose.model('Link', LinkSchema);

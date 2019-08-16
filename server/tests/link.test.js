@@ -1,6 +1,5 @@
 const httpStatus = require('http-status');
 const app = require('../app');
-const Link = require('../models/link.model');
 const { getNextSequence, clearDatabase } = require('../utils/mongoose.utils');
 
 describe('## Link APIs', () => {
@@ -9,17 +8,12 @@ describe('## Link APIs', () => {
   before(async () => {
     await clearDatabase();
 
-    // link = await Link.create({
-    //   index: await getNextSequence('linkId'),
-    //   originalUrl: 'https://iAmaReallyLongTestUrl.com/',
-    // });
     const data = {
       index: await getNextSequence('linkId'),
       originalUrl: 'https://iAmaReallyLongTestUrl.com/',
     };
     const response = await request(app).post('/api/links').send(data);
     link = response.body;
-
   });
 
   describe('# GET /api/links/:linkId', () => {
@@ -68,7 +62,7 @@ describe('## Link APIs', () => {
 
       expect(response.status).to.equal(httpStatus.OK);
       expect(response.body.originalUrl).to.equal(data.originalUrl);
-    });    
+    });
   });
 
   describe('# PUT /api/links/:linkId', () => {

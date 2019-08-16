@@ -8,8 +8,9 @@ const bodyParser = require('body-parser');
 
 const routes = require('../server/routes/index.route');
 const APIError = require('./utils/APIError.utils');
+
 const env = process.env.NODE_ENV || 'development';
-const config = require(`./config/config`)[env]; // eslint-disable-line import/no-dynamic-require
+const config = require('./config/config')[env]; // eslint-disable-line import/no-dynamic-require
 
 const app = express();
 
