@@ -88,6 +88,10 @@ module.exports = {
         .populate({ path: 'visits', options: { sort: { createdAt: -1 } } })
         .lean();
 
+      if (!link) {
+        return next(new APIError('Link not found', httpStatus.NOT_FOUND));
+      }      
+
       const topThreeCountries = await Visit.aggregate([
         { $match: { linkId: link._id } },
         {
@@ -106,9 +110,6 @@ module.exports = {
       // Temporary fields
       link.topCountry = topCountry;
 
-      if (!link) {
-        return next(new APIError('Link not found', httpStatus.NOT_FOUND));
-      }
       return res.json(link);
     } catch (err) {
       return next(err);

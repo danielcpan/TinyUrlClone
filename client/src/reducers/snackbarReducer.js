@@ -1,6 +1,6 @@
-import { 
-  DISPLAY_SNACKBAR, 
-  HANDLE_CLOSE 
+import {
+  DISPLAY_SNACKBAR,
+  HANDLE_CLOSE,
 } from '../constants/actionTypes';
 
 const initialState = {
@@ -21,11 +21,11 @@ export default (state = initialState, action) => {
         msg: action.payload.msg,
       };
     case HANDLE_CLOSE:
-        return {
-          ...state,
-          open: false,
-          msg: '',
-        };      
+      return {
+        ...state,
+        open: false,
+        msg: '',
+      };
     default:
       return state;
   }

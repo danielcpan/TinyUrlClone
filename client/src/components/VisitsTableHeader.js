@@ -15,17 +15,17 @@ const headerRows = [
   { id: 'createdAt', align: 'left', label: 'Date' },
 ];
 
-const VisitsTableHeader = props => {
+const VisitsTableHeader = (props) => {
   const { order, orderBy, onRequestSort } = props;
 
-  const createSortHandler = property => event => {
+  const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
 
   return (
     <TableHead>
       <TableRow>
-        {headerRows.map(row => (
+        {headerRows.map((row) => (
           <TableCell
             key={row.id}
             align={row.align}
@@ -43,7 +43,7 @@ const VisitsTableHeader = props => {
       </TableRow>
     </TableHead>
   );
-}
+};
 
 VisitsTableHeader.propTypes = {
   onRequestSort: PropTypes.func.isRequired,

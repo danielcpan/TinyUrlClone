@@ -2,62 +2,58 @@ import React from 'react';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { amber, green } from '@material-ui/core/colors';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { 
-  Button, 
-  Grid, 
-  Container, 
-  TextField, 
-  Typography 
+import {
+  Button,
+  Grid,
+  Container,
+  TextField,
+  Typography,
 } from '@material-ui/core';
-
-import TouchAppIcon from '@material-ui/icons/TouchAppOutlined'
-import PermIdentityIcon from '@material-ui/icons/PermIdentity'
-import PlaceIcon from '@material-ui/icons/PlaceOutlined';
 
 import VisitsTable from '../components/VisitsTable';
 import DashboardSummary from '../components/DashboardSummary';
-// import CardSummary from '../components/CardSummary';
 import { getLinkAnalytics, resetCurrentLink } from '../actions/linkActions';
 
-const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
+const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/;
 const SAME_URL_REGEX = /^http:\/\/example\.com/;
-// const TINY_URL_ID_REGEX = /\/([^\/]+)\/?$/;
 
-const styles = theme => ({
+const styles = (theme) => ({
   heroContent: {
     padding: theme.spacing(2, 0, 9),
   },
   shortenButton: {
     width: '100%',
     lineHeight: 3.2,
-  },  
+  },
 });
 
 
 class Analytics extends React.Component {
-  state = {
-    tinyUrl: '',
-    tinyUrlErrors: []
+  constructor(props) {
+    super(props);
+    this.state = {
+      tinyUrl: '',
+      tinyUrlErrors: [],
+    };
   }
 
   componentDidMount() {
-    this.props.resetCurrentLink()
+    this.props.resetCurrentLink(); // eslint-disable-line react/destructuring-assignment
   }
 
   onChange = (e) => {
     const { name, value } = e.target;
-    this.setState({ [name]: value});
-  }  
+    this.setState({ [name]: value });
+  }
 
-  onSubmit = e => {
+  onSubmit = (e) => {
     e.preventDefault();
-    const errors = []
-    const { tinyUrl } = this.state
+    const errors = [];
+    const { tinyUrl } = this.state;
 
     if (tinyUrl.length === 0) {
-      errors.push('Cannot be empty')
+      errors.push('Cannot be empty');
     }
 
     // if (URL_REGEX.test(tinyUrl) === false) {
@@ -71,18 +67,19 @@ class Analytics extends React.Component {
     const tinyUrlId = tinyUrl.substr(tinyUrl.lastIndexOf('/') + 1);
 
     if (tinyUrlId.length !== 6) {
-      errors.push('____ links must have 6 characters as the id')
+      errors.push('____ links must have 6 characters as the id');
     }
 
     if (errors.length === 0) {
-      this.props.getLinkAnalytics(tinyUrlId)
+      this.props.getLinkAnalytics(tinyUrlId); // eslint-disable-line react/destructuring-assignment
     }
 
-    this.setState({ tinyUrlErrors: errors })
+    this.setState({ tinyUrlErrors: errors });
   }
 
   render() {
-    const { link, classes } =  this.props;
+    const { link, classes } = this.props;
+    const { tinyUrl, tinyUrlErrors } = this.state;
 
     return (
       <>
@@ -102,18 +99,18 @@ class Analytics extends React.Component {
                         type="url"
                         label="____ link to search"
                         name="tinyUrl"
-                        value={this.state.tinyUrl}
+                        value={tinyUrl}
                         onChange={this.onChange}
                         variant="outlined"
                         fullWidth
-                        error={this.state.tinyUrlErrors.length > 0}
-                        helperText={(this.state.tinyUrlErrors) ? this.state.tinyUrlErrors[0] : ''}
+                        error={tinyUrlErrors.length > 0}
+                        helperText={(tinyUrlErrors) ? tinyUrlErrors[0] : ''}
                       />
                     </Grid>
                     <Grid item xs={5} sm={4} md={3}>
-                      <Button 
-                        variant="outlined" 
-                        color="primary" 
+                      <Button
+                        variant="outlined"
+                        color="primary"
                         className={classes.shortenButton}
                         onClick={this.onSubmit}
                       >
@@ -133,21 +130,27 @@ class Analytics extends React.Component {
           </div>
         </main>
       </>
-    );    
+    );
   }
-};
+}
 
 Analytics.propTypes = {
-  getLinkAnalytics: Proptypes.func.isRequired
+  link: Proptypes.object,
+  getLinkAnalytics: Proptypes.func.isRequired,
+  resetCurrentLink: Proptypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+Analytics.defaultProps = {
+  link: {},
+};
+
+const mapStateToProps = (state) => ({
   link: state.links.currentLink,
 });
 
-const mapDispatchToProps = dispatch => ({
-  getLinkAnalytics: tinyUrId => dispatch(getLinkAnalytics(tinyUrId)),
-  resetCurrentLink: () => dispatch(resetCurrentLink())
+const mapDispatchToProps = (dispatch) => ({
+  getLinkAnalytics: (tinyUrId) => dispatch(getLinkAnalytics(tinyUrId)),
+  resetCurrentLink: () => dispatch(resetCurrentLink()),
 });
 
 export default connect(

@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { 
-  Button, 
-  Grid, 
-  Container, 
-  TextField, 
+import {
+  Button,
+  Grid,
+  Container,
+  TextField,
   Typography,
   List,
   ListItem,
@@ -19,10 +19,10 @@ import {
 import { createLink } from '../actions/linkActions';
 import { displaySnackbar } from '../actions/snackbarActions';
 
-const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
+const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/;
 const SAME_URL_REGEX = /^http:\/\/example\.com/;
 
-const styles = theme => ({
+const styles = (theme) => ({
   heroContent: {
     padding: theme.spacing(8, 0, 6),
   },
@@ -32,55 +32,59 @@ const styles = theme => ({
   },
   list: {
     backgroundColor: theme.palette.background.paper,
-  },  
+  },
 });
 
 class Home extends React.Component {
-  state = {
-    linkFormData: {
-      originalUrl: ''
-    },
-    originalUrlErrors: []
+  constructor(props) {
+    super(props);
+    this.state = {
+      linkFormData: {
+        originalUrl: '',
+      },
+      originalUrlErrors: [],
+    };
   }
 
   onChange = (e) => {
     const { name, value } = e.target;
     this.setState({
       linkFormData: {
-        ...this.state.linkFormData,
+        ...this.state.linkFormData, // eslint-disable-line react/no-access-state-in-setstate, react/destructuring-assignment, max-len
         [name]: value,
       },
     });
-  }  
+  }
 
-  onSubmit = e => {
+  onSubmit = (e) => {
     e.preventDefault();
     const { linkFormData } = this.state;
-    const errors = []
+    const errors = [];
 
     if (linkFormData.originalUrl.length === 0) {
-      this.setState()
-      errors.push('Cannot be empty')
+      this.setState();
+      errors.push('Cannot be empty');
     }
 
     if (URL_REGEX.test(linkFormData.originalUrl) === false) {
-      errors.push('Invalid Url')
+      errors.push('Invalid Url');
     }
 
     if (SAME_URL_REGEX.test(linkFormData.originalUrl)) {
-      errors.push('That is already a ____ link!')
+      errors.push('That is already a ____ link!');
     }
 
     if (errors.length === 0) {
-      this.props.createLink(this.state.linkFormData)
+      this.props.createLink(this.state.linkFormData); // eslint-disable-line react/destructuring-assignment, max-len
     }
 
-    this.setState({ originalUrlErrors: errors })
+    this.setState({ originalUrlErrors: errors });
   }
 
 
   render() {
-    const { createdLinks, displaySnackbar, classes } =  this.props;
+    const { createdLinks, displaySnackbar, classes } = this.props;
+    const { linkFormData, originalUrlErrors } = this.state;
 
     return (
       <>
@@ -88,11 +92,23 @@ class Home extends React.Component {
         <main>
           <div className={classes.heroContent}>
             <Container maxWidth="md">
-              <Typography component="h1" variant="h3" align="center" color="textPrimary" gutterBottom>
+              <Typography
+                component="h1"
+                variant="h3"
+                align="center"
+                color="textPrimary"
+                gutterBottom
+              >
                 Shorten your link!
               </Typography>
-              <Typography variant="h5" align="center" color="textSecondary" paragraph>
-                Like Bitly, it even keeps track of click analytics such as total clicks, unique clicks, ip, and geolocation!
+              <Typography
+                variant="h5"
+                align="center"
+                color="textSecondary"
+                paragraph
+              >
+                Like Bitly, it even keeps track of click analytics such as
+                total clicks, unique clicks, ip, and geolocation!
               </Typography>
               <div className={classes.heroButtons}>
                 <form onSubmit={this.onSubmit}>
@@ -103,18 +119,18 @@ class Home extends React.Component {
                         type="url"
                         label="Shorten your link"
                         name="originalUrl"
-                        value={this.state.linkFormData.link}
+                        value={linkFormData.link}
                         onChange={this.onChange}
                         variant="outlined"
                         fullWidth
-                        error={this.state.originalUrlErrors.length > 0}
-                        helperText={(this.state.originalUrlErrors) ? this.state.originalUrlErrors[0] : ''}
+                        error={originalUrlErrors.length > 0}
+                        helperText={(originalUrlErrors) ? originalUrlErrors[0] : ''}
                       />
                     </Grid>
                     <Grid item xs={3}>
-                      <Button 
-                        variant="outlined" 
-                        color="primary" 
+                      <Button
+                        variant="outlined"
+                        color="primary"
                         className={classes.shortenButton}
                         onClick={this.onSubmit}
                       >
@@ -124,21 +140,23 @@ class Home extends React.Component {
                     <Grid item xs={12}>
                       {(createdLinks[0]) && (
                         <div className={classes.list}>
-                          <List dense style={{ border: "1px solid #b2b8c3", borderRadius: '5px'}}>
+                          <List dense style={{ border: '1px solid #b2b8c3', borderRadius: '5px' }}>
                             <ListItem>
                               <ListItemText
                                 primary={createdLinks[0].tinyUrl}
                               />
                               <ListItemSecondaryAction>
-                              <CopyToClipboard text={createdLinks[0].tinyUrl}
-                              onCopy={() => displaySnackbar({ msg: 'Copied to clipboard!' })}>
-                                <Button 
-                                  variant="outlined" 
-                                  color="primary" 
-                                  className={classes.button}
+                                <CopyToClipboard
+                                  text={createdLinks[0].tinyUrl}
+                                  onCopy={() => displaySnackbar({ msg: 'Copied to clipboard!' })}
                                 >
+                                  <Button
+                                    variant="outlined"
+                                    color="primary"
+                                    className={classes.button}
+                                  >
                                   Copy
-                                </Button>
+                                  </Button>
                                 </CopyToClipboard>
                               </ListItemSecondaryAction>
                             </ListItem>
@@ -153,26 +171,31 @@ class Home extends React.Component {
           </div>
         </main>
       </>
-    );    
+    );
   }
-};
+}
 
 Home.propTypes = {
-  createLink: Proptypes.func.isRequired
+  createLink: Proptypes.func.isRequired,
+  createdLinks: Proptypes.array,
+  displaySnackbar: Proptypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+Home.defaultProps = {
+  createdLinks: [],
+};
+
+const mapStateToProps = (state) => ({
   link: state.links.currentLink,
-  createdLinks: state.links.createdLinks
+  createdLinks: state.links.createdLinks,
 });
 
-const mapDispatchToProps = dispatch => ({
-  createLink: data => dispatch(createLink(data)),
-  displaySnackbar: data => dispatch(displaySnackbar(data))
+const mapDispatchToProps = (dispatch) => ({
+  createLink: (data) => dispatch(createLink(data)),
+  displaySnackbar: (data) => dispatch(displaySnackbar(data)),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(withStyles(styles)(Home));
-

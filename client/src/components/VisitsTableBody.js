@@ -5,7 +5,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 
-const VisitsTableBody = props => {
+const VisitsTableBody = (props) => {
   function desc(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
       return -1;
@@ -15,7 +15,7 @@ const VisitsTableBody = props => {
     }
     return 0;
   }
-  
+
   function stableSort(array, cmp) {
     const stabilizedThis = array.map((el, index) => [el, index]);
     stabilizedThis.sort((a, b) => {
@@ -23,14 +23,16 @@ const VisitsTableBody = props => {
       if (order !== 0) return order;
       return a[1] - b[1];
     });
-    return stabilizedThis.map(el => el[0]);
+    return stabilizedThis.map((el) => el[0]);
   }
-  
+
   function getSorting(order, orderBy) {
     return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
   }
 
-  const { visits, order, orderBy, page, rowsPerPage } = props;
+  const {
+    visits, order, orderBy, page, rowsPerPage,
+  } = props;
 
   return (
     <TableBody>
@@ -52,7 +54,7 @@ const VisitsTableBody = props => {
         ))}
     </TableBody>
   );
-}
+};
 
 VisitsTableBody.propTypes = {
   visits: Proptypes.array.isRequired,
@@ -60,6 +62,6 @@ VisitsTableBody.propTypes = {
   orderBy: Proptypes.string.isRequired,
   page: Proptypes.number.isRequired,
   rowsPerPage: Proptypes.number.isRequired,
-}
+};
 
 export default VisitsTableBody;

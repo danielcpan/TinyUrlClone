@@ -1,13 +1,13 @@
 import axios from 'axios';
 
-import { 
-  GET_LINK_ANALYTICS, 
+import {
+  GET_LINK_ANALYTICS,
   RESET_CURRENT_LINK,
   CREATE_LINK,
-  DISPLAY_SNACKBAR
+  DISPLAY_SNACKBAR,
 } from '../constants/actionTypes';
 
-export const getLinkAnalytics = tinyUrlId => async dispatch => {
+export const getLinkAnalytics = (tinyUrlId) => async (dispatch) => {
   try {
     const response = await axios.get(`/api/links/analytics/${tinyUrlId}`);
     dispatch({
@@ -17,11 +17,11 @@ export const getLinkAnalytics = tinyUrlId => async dispatch => {
   } catch (err) {
     const snackbarPayload = {
       variant: 'error',
-      msg: err.response.data.message
+      msg: err.response.data.message,
     };
     dispatch({
       type: DISPLAY_SNACKBAR,
-      payload: snackbarPayload
+      payload: snackbarPayload,
     });
     dispatch({
       type: 'GET_LINK_ANALYTICS_ERROR',
@@ -30,13 +30,13 @@ export const getLinkAnalytics = tinyUrlId => async dispatch => {
   }
 };
 
-export const resetCurrentLink = () => async dispatch => {
+export const resetCurrentLink = () => async (dispatch) => {
   dispatch({ type: RESET_CURRENT_LINK });
 };
 
-export const createLink = data => async dispatch => {
+export const createLink = (data) => async (dispatch) => {
   try {
-    const response = await axios.post(`/api/links`, data);
+    const response = await axios.post('/api/links', data);
     dispatch({
       type: CREATE_LINK,
       payload: response.data,

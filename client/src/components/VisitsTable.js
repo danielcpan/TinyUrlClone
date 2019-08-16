@@ -2,9 +2,9 @@ import React from 'react';
 import Proptypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-  Container, 
+  Container,
   Paper,
-  Typography, 
+  Typography,
   Toolbar,
   Table,
 } from '@material-ui/core';
@@ -13,7 +13,7 @@ import VisitsTableHeader from './VisitsTableHeader';
 import VisitsTableBody from './VisitsTableBody';
 import VisitsTableFooter from './VisitsTableFooter';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
     marginTop: theme.spacing(3),
@@ -24,14 +24,14 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const VisitsTable = props => {
+const VisitsTable = (props) => {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('date');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  const { visits } = props
+  const { visits } = props;
 
   function onRequestSort(event, property) {
     const isDesc = orderBy === property && order === 'desc';
@@ -54,14 +54,14 @@ const VisitsTable = props => {
         <Toolbar>
           <Typography variant="h6">Visits</Typography>
         </Toolbar>
-        <Table className={classes.table} size={'small'}>
-          <VisitsTableHeader 
+        <Table className={classes.table} size="small">
+          <VisitsTableHeader
             classes={classes}
             order={order}
             orderBy={orderBy}
             onRequestSort={onRequestSort}
           />
-          <VisitsTableBody 
+          <VisitsTableBody
             visits={visits}
             order={order}
             orderBy={orderBy}
@@ -69,7 +69,7 @@ const VisitsTable = props => {
             rowsPerPage={rowsPerPage}
           />
         </Table>
-        <VisitsTableFooter 
+        <VisitsTableFooter
           visitsLength={visits.length}
           rowsPerPage={rowsPerPage}
           page={page}
@@ -79,10 +79,10 @@ const VisitsTable = props => {
       </Paper>
     </Container>
   );
-}
+};
 
 VisitsTableBody.propTypes = {
   visits: Proptypes.array.isRequired,
-}
+};
 
 export default VisitsTable;
