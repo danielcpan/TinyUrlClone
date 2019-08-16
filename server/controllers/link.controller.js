@@ -90,7 +90,7 @@ module.exports = {
 
       if (!link) {
         return next(new APIError('Link not found', httpStatus.NOT_FOUND));
-      }      
+      }
 
       const topThreeCountries = await Visit.aggregate([
         { $match: { linkId: link._id } },
