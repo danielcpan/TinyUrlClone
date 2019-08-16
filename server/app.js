@@ -48,10 +48,17 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   });
 });
 
-// Mongoose Connect to database
+// Mongoose Connect to heroku database
+if (process.env.MONGODB_URI) {
+  mongoose
+  .connect(process.env.MONGODB_URI, { useNewUrlParser: true })
+  .catch((error) => console.log(error));  
+} else {
+// Mongoose Connect to local database
 mongoose
   .connect(`mongodb://127.0.0.1:27017/${config.database}`, { useNewUrlParser: true })
   .catch((error) => console.log(error));
+}
 
 mongoose.set('useCreateIndex', true);
 mongoose.set('debug', true);
