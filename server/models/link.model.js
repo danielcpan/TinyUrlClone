@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/;
+const URL_REGEX = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
 const SAME_URL_REGEX = /^https?:\/\/tiny-url-clone-api.herokuapp\.com/;
 
 const manyValidators = [
