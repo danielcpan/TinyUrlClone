@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/;
-const SAME_URL_REGEX = /^http:\/\/example\.com/;
+const SAME_URL_REGEX = /^https?:\/\/tiny-url-clone-api.herokuapp\.com/;
 
 const manyValidators = [
   { validator: (v) => URL_REGEX.test(v), msg: 'Invalid Url' },
-  { validator: (v) => !SAME_URL_REGEX.test(v), msg: 'That is already a ____ link!' },
+  { validator: (v) => !SAME_URL_REGEX.test(v), msg: 'That is already a tiny-url-clone-api.herokuapp.com link!' },
 ];
 
 const LinkSchema = new mongoose.Schema({
