@@ -15,7 +15,7 @@ module.exports = {
         return next(new APIError('Link not found', httpStatus.NOT_FOUND));
       }
 
-      let ip;
+      let ip = req.ip;
 
       console.log("req.ip: " + req.ip)
       // TEST IP
@@ -26,6 +26,8 @@ module.exports = {
       const response = await axios.get(`https://ipinfo.io/${ip}`, {
         headers: { Authorization: `Bearer ${IP_INFO_TOKEN}` },
       });
+
+      console.log(response.data)
 
       const visit = new Visit({ ...response.data, linkId: link._id });
 
