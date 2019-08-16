@@ -2,6 +2,7 @@ import React from 'react';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
+import { amber, green } from '@material-ui/core/colors';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { 
   Button, 
@@ -11,7 +12,13 @@ import {
   Typography 
 } from '@material-ui/core';
 
+import TouchAppIcon from '@material-ui/icons/TouchAppOutlined'
+import PermIdentityIcon from '@material-ui/icons/PermIdentity'
+import PlaceIcon from '@material-ui/icons/PlaceOutlined';
+
 import VisitsTable from '../components/VisitsTable';
+import DashboardSummary from '../components/DashboardSummary';
+// import CardSummary from '../components/CardSummary';
 import { getLinkAnalytics, resetCurrentLink } from '../actions/linkActions';
 
 const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
@@ -89,7 +96,7 @@ class Analytics extends React.Component {
               <div className={classes.heroButtons}>
                 <form onSubmit={this.onSubmit}>
                   <Grid container spacing={2} justify="center">
-                    <Grid item xs={9}>
+                    <Grid item xs={7} sm={9}>
                       <TextField
                         id="tinyUrl"
                         type="url"
@@ -103,7 +110,7 @@ class Analytics extends React.Component {
                         helperText={(this.state.tinyUrlErrors) ? this.state.tinyUrlErrors[0] : ''}
                       />
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={5} sm={3}>
                       <Button 
                         variant="outlined" 
                         color="primary" 
@@ -118,7 +125,10 @@ class Analytics extends React.Component {
               </div>
             </Container>
             {(link.visits) && (
-              <VisitsTable visits={link.visits}/>
+              <>
+                <DashboardSummary link={link} />
+                <VisitsTable visits={link.visits} />
+              </>
             )}
           </div>
         </main>
