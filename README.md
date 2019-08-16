@@ -31,3 +31,33 @@ Check out the app! https://tiny-url-clone.netlify.com
 
 #### Check Out Link Analytics
 ![GetLinkAnalytics](https://user-images.githubusercontent.com/20826907/63155037-b275b880-bfc6-11e9-9da8-dbdbe5858516.gif)
+
+#### URL Shortening Logic
+
+```javascript
+const BASE_62 = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+
+module.exports.decimalToBaseN = (decimal, baseN) => {
+  const remainders = [];
+  let newDecimal = decimal;
+
+  while (newDecimal > 0) {
+    const quotient = Math.floor(newDecimal / baseN);
+    const remainder = newDecimal % baseN;
+    newDecimal = quotient;
+    remainders.push(remainder);
+  }
+  const result = remainders.reverse().map(remainder => BASE_62[remainder]).join('');
+  return pad(result, 6);
+};
+```
+
+Every created link is saved into mongoDB and given both the normal Object id as well as a sequential index id i.e. (1,2,3…n). 
+
+I've designed the link endpoint to never be longer than 6 characters. 
+
+If soley the sequential index were to be used, this would only make (10^6) - 1 or <u>999,999</u> shortned links possible. 
+
+In effort to maximize the possiblities without increasing character count I implemented a base_62 converter where the sequential index would be converted to its base_62 representation. This allows there to (62^6) - 1 or <u>56,800,235,583</u> shortned links possible now. 
+
+*Heard this about this problem from a friend's interview and figured it would be a fun project to try making.

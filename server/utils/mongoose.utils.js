@@ -35,7 +35,7 @@ module.exports.decimalToBaseN = (decimal, baseN) => {
     newDecimal = quotient;
     remainders.push(remainder);
   }
-  const result = remainders.reverse().map((remainder) => BASE_62[remainder]).join('');
+  const result = remainders.reverse().map(remainder => BASE_62[remainder]).join('');
   return pad(result, 6);
 };
 
