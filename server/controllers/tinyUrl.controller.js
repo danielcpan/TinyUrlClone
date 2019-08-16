@@ -29,6 +29,9 @@ module.exports = {
 
       const visit = new Visit({ ...response.data, linkId: link._id });
 
+      console.log("vist")
+      console.log(visit)
+
       const searchedVisit = await Visit.findOne({ ip: visit.ip });
 
       // IP does not exists, is unique
@@ -41,6 +44,8 @@ module.exports = {
       link.totalClicks += 1;
       link.visits.push(visit);
       await link.save();
+
+      console.log("working still up to this point")
 
       return res.status(httpStatus.MOVED_PERMANENTLY).redirect(link.originalUrl);
     } catch (err) {
