@@ -16,23 +16,14 @@ module.exports = {
       }
 
       let ip = req.ip;
-
-      console.log("req.ip: " + req.ip)
-      // TEST IP
       if (process.env.NODE_ENV === 'test' || req.ip === '::1' || req.ip === '::ffff:127.0.0.1') {
         ip = '78.22.241.57';
-        // ip = '172.146.200.120'
       }
       const response = await axios.get(`https://ipinfo.io/${ip}`, {
         headers: { Authorization: `Bearer ${IP_INFO_TOKEN}` },
       });
 
-      console.log(response.data)
-
       const visit = new Visit({ ...response.data, linkId: link._id });
-
-      console.log("vist")
-      console.log(visit)
 
       const searchedVisit = await Visit.findOne({ ip: visit.ip });
 
@@ -46,8 +37,6 @@ module.exports = {
       link.totalClicks += 1;
       link.visits.push(visit);
       await link.save();
-
-      console.log("working still up to this point")
 
       return res.status(httpStatus.MOVED_PERMANENTLY).redirect(link.originalUrl);
     } catch (err) {
