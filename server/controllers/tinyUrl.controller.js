@@ -25,7 +25,7 @@ module.exports = {
 
       const visit = new Visit({ ...response.data, linkId: link._id });
 
-      const searchedVisit = await Visit.findOne({ ip: visit.ip });
+      const searchedVisit = await Visit.findOne({ ip: visit.ip, linkId: link._id });
 
       // IP does not exists, is unique
       if (!searchedVisit) {
