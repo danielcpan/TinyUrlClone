@@ -1,4 +1,5 @@
 import React from 'react';
+import Proptypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { 
   Paper,
@@ -29,7 +30,7 @@ const VisitsTable = props => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  const { visits = [] } = props
+  const { visits } = props
 
   function onRequestSort(event, property) {
     const isDesc = orderBy === property && order === 'desc';
@@ -75,6 +76,10 @@ const VisitsTable = props => {
       />
     </Paper>
   );
+}
+
+VisitsTableBody.propTypes = {
+  visits: Proptypes.array.isRequired,
 }
 
 export default VisitsTable;

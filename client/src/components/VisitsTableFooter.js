@@ -26,11 +26,11 @@ const VisitsTableFooter = props => {
 }
 
 VisitsTableFooter.propTypes = {
-  visitsLength: Proptypes.number,
-  rowsPerPage: Proptypes.number,
-  page: Proptypes.number,
-  onChangePage: Proptypes.func,
-  onChangeRowsPerPage: Proptypes.func
+  visitsLength: Proptypes.number.isRequired,
+  rowsPerPage: Proptypes.number.isRequired,
+  page: Proptypes.number.isRequired,
+  onChangePage: Proptypes.func.isRequired,
+  onChangeRowsPerPage: Proptypes.func.isRequired
 }
 
 export default VisitsTableFooter

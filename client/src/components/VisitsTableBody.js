@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import Proptypes from 'prop-types';
 import format from 'date-fns/format';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -52,6 +52,14 @@ const VisitsTableBody = props => {
         ))}
     </TableBody>
   );
+}
+
+VisitsTableBody.propTypes = {
+  visits: Proptypes.array.isRequired,
+  order: Proptypes.string.isRequired,
+  orderBy: Proptypes.string.isRequired,
+  page: Proptypes.number.isRequired,
+  rowsPerPage: Proptypes.number.isRequired,
 }
 
 export default VisitsTableBody;
