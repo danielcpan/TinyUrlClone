@@ -17,6 +17,7 @@ module.exports = {
 
       let ip;
 
+      console.log("req.ip: " + req.ip)
       // TEST IP
       if (process.env.NODE_ENV === 'test' || req.ip === '::1' || req.ip === '::ffff:127.0.0.1') {
         ip = '78.22.241.57';
