@@ -116,10 +116,10 @@ class Analytics extends React.Component {
                   </Grid>
                 </form>
               </div>
-              {(link.visits) && (
-                <VisitsTable visits={link.visits}/>
-              )}
             </Container>
+            {(link.visits) && (
+              <VisitsTable visits={link.visits}/>
+            )}
           </div>
         </main>
       </>

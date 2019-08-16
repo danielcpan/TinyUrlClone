@@ -42,12 +42,12 @@ const VisitsTableBody = props => {
             key={visit._id}
           >
             <TableCell component="th" scope="row">{visit.ip}</TableCell>
-            <TableCell align="right">{visit.city}</TableCell>
-            <TableCell align="right">{visit.region}</TableCell>
-            <TableCell align="right">{visit.country}</TableCell>
-            <TableCell align="right">{visit.loc}</TableCell>
-            <TableCell align="right">{(visit.isUnique) ? 'Yes' : 'No'}</TableCell>
-            <TableCell align="right">{format(visit.createdAt, 'MMM DD, YYYY')}</TableCell>
+            <TableCell align="left">{visit.city}</TableCell>
+            <TableCell align="left">{visit.region}</TableCell>
+            <TableCell align="left">{visit.country}</TableCell>
+            <TableCell align="left">{visit.loc}</TableCell>
+            <TableCell align="left">{(visit.isUnique) ? 'Yes' : 'No'}</TableCell>
+            <TableCell align="left">{format(visit.createdAt, 'MMM DD, YYYY')}</TableCell>
           </TableRow>
         ))}
     </TableBody>

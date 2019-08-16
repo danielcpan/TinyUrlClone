@@ -8,7 +8,7 @@ const VisitsTableFooter = props => {
   return (
     <>
       <TablePagination
-      rowsPerPageOptions={[5, 10, 25]}
+      rowsPerPageOptions={[10, 25, 100]}
       component="div"
       count={visitsLength}
       rowsPerPage={rowsPerPage}

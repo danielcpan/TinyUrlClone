@@ -1,7 +1,8 @@
 import React from 'react';
 import Proptypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import { 
+import {
+  Container, 
   Paper,
   Typography, 
   Toolbar,
@@ -19,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     overflowX: 'auto',
   },
   table: {
-    width: 850,
+    // width: 850,
   },
 }));
 
@@ -28,7 +29,7 @@ const VisitsTable = props => {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('date');
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const { visits } = props
 
@@ -48,33 +49,35 @@ const VisitsTable = props => {
   }
 
   return (
-    <Paper className={classes.root}>
-      <Toolbar>
-        <Typography variant="h6">Visits</Typography>
-      </Toolbar>
-      <Table className={classes.table}>
-        <VisitsTableHeader 
-          classes={classes}
-          order={order}
-          orderBy={orderBy}
-          onRequestSort={onRequestSort}
-        />
-        <VisitsTableBody 
-          visits={visits}
-          order={order}
-          orderBy={orderBy}
-          page={page}
+    <Container>
+      <Paper className={classes.root}>
+        <Toolbar>
+          <Typography variant="h6">Visits</Typography>
+        </Toolbar>
+        <Table className={classes.table} size={'small'}>
+          <VisitsTableHeader 
+            classes={classes}
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={onRequestSort}
+          />
+          <VisitsTableBody 
+            visits={visits}
+            order={order}
+            orderBy={orderBy}
+            page={page}
+            rowsPerPage={rowsPerPage}
+          />
+        </Table>
+        <VisitsTableFooter 
+          visitsLength={visits.length}
           rowsPerPage={rowsPerPage}
+          page={page}
+          onChangePage={onChangePage}
+          onChangeRowsPerPage={onChangeRowsPerPage}
         />
-      </Table>
-      <VisitsTableFooter 
-        visitsLength={visits.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onChangePage={onChangePage}
-        onChangeRowsPerPage={onChangeRowsPerPage}
-      />
-    </Paper>
+      </Paper>
+    </Container>
   );
 }
 
