@@ -1,12 +1,15 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import format from 'date-fns/format';
+import { 
+  Paper,
+  Typography, 
+  Toolbar,
+  Table,
+} from '@material-ui/core';
+
+import VisitsTableHeader from './VisitsTableHeader';
+import VisitsTableBody from './VisitsTableBody';
+import VisitsTableFooter from './VisitsTableFooter';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,59 +22,57 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
-
-const headers = [
-  'IP', 
-  'City', 
-  'Region', 
-  'Country', 
-  'Location', 
-  'Unique',
-  // 'Organization', 
-  'Created At'
-]
-
 const VisitsTable = props => {
   const classes = useStyles();
+  const [order, setOrder] = React.useState('asc');
+  const [orderBy, setOrderBy] = React.useState('date');
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
   const { visits = [] } = props
+
+  function onRequestSort(event, property) {
+    const isDesc = orderBy === property && order === 'desc';
+    setOrder(isDesc ? 'asc' : 'desc');
+    setOrderBy(property);
+  }
+
+  function onChangePage(event, newPage) {
+    setPage(newPage);
+  }
+
+  function onChangeRowsPerPage(event) {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  }
 
   return (
     <Paper className={classes.root}>
+      <Toolbar>
+        <Typography variant="h6">Visits</Typography>
+      </Toolbar>
       <Table className={classes.table}>
-        <TableHead>
-          <TableRow>
-            {(headers.map(header => <TableCell key={header}>{header}</TableCell> ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {visits.map(visit => (
-            <TableRow key={visit.id}>
-              <TableCell component="th" scope="row">
-                {visit.ip}
-              </TableCell>
-              <TableCell align="right">{visit.city}</TableCell>
-              <TableCell align="right">{visit.region}</TableCell>
-              <TableCell align="right">{visit.country}</TableCell>
-              <TableCell align="right">{visit.loc}</TableCell>
-              <TableCell align="right">{(visit.isUnique) ? 'Yes' : 'No'}</TableCell>
-              {/* <TableCell align="right">{visit.org}</TableCell> */}
-              <TableCell align="right">{format(visit.createdAt, 'MMM DD, YYYY')}</TableCell>
-              {/* <TableCell align="right">{visit.createdAt}</TableCell> */}
-            </TableRow>
-          ))}
-        </TableBody>
+        <VisitsTableHeader 
+          classes={classes}
+          order={order}
+          orderBy={orderBy}
+          onRequestSort={onRequestSort}
+        />
+        <VisitsTableBody 
+          visits={visits}
+          order={order}
+          orderBy={orderBy}
+          page={page}
+          rowsPerPage={rowsPerPage}
+        />
       </Table>
+      <VisitsTableFooter 
+        visitsLength={visits.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onChangePage={onChangePage}
+        onChangeRowsPerPage={onChangeRowsPerPage}
+      />
     </Paper>
   );
 }
