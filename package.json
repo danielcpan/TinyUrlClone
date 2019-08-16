@@ -4,9 +4,6 @@
   "description": "Creates a shortened redirect link to your url",
   "main": "server.js",
   "scripts": {
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "client": "npm start --prefix client",
-    "server": "nodemon server/server.js",
     "lint": "./node_modules/.bin/eslint --fix server",
     "start": "nodemon server/server.js",
     "test": "NODE_ENV=test node_modules/.bin/mocha --opts server/mocha.opts --exit",
@@ -26,7 +23,6 @@
     "axios": "^0.19.0",
     "body-parser": "^1.19.0",
     "chai": "^4.2.0",
-    "concurrently": "^4.1.1",
     "cors": "^2.8.5",
     "date-fns": "^1.30.1",
     "dotenv": "^8.0.0",

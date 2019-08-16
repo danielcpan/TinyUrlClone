@@ -20,8 +20,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('trust proxy', true);
 
-// app.use(express.static(path.resolve(__dirname, '../client/build')));
-
 // Mount all routes
 app.use('/', routes);
 
@@ -34,10 +32,6 @@ app.use((err, req, res, next) => {
 
   return next(err);
 });
-
-// app.get('*', (req, res) => {
-//   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
-// });
 
 // Catch 404 and forward to Error Handler
 app.use((req, res, next) => {
