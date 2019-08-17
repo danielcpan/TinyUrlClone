@@ -8,6 +8,9 @@ const pad = (num, size) => {
   return s.substr(s.length - size);
 };
 
+module.exports.withHttp = (url) => (!/^https?:\/\//i.test(url) ? `http://${url}` : url);
+module.exports.withoutWWW = (url) => url.replace(/[https*:\\]*www./, '');
+
 module.exports.getNextSequence = async (name) => {
   const counter = await Counter.findOneAndUpdate(
     { _id: name },
@@ -35,7 +38,7 @@ module.exports.decimalToBaseN = (decimal, baseN) => {
     newDecimal = quotient;
     remainders.push(remainder);
   }
-  const result = remainders.reverse().map(remainder => BASE_62[remainder]).join('');
+  const result = remainders.reverse().map((remainder) => BASE_62[remainder]).join('');
   return pad(result, 6);
 };
 

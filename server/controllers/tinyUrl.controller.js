@@ -15,7 +15,7 @@ module.exports = {
         return next(new APIError('Link not found', httpStatus.NOT_FOUND));
       }
 
-      let ip = req.ip;
+      let { ip } = req;
       if (process.env.NODE_ENV === 'test' || req.ip === '::1' || req.ip === '::ffff:127.0.0.1') {
         ip = '78.22.241.57';
       }

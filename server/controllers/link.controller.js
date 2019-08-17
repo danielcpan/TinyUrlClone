@@ -1,6 +1,8 @@
 const httpStatus = require('http-status');
 
-const { decimalToBaseN, getNextSequence } = require('../utils/mongoose.utils');
+const {
+  decimalToBaseN, withHttp, withoutWWW, getNextSequence,
+} = require('../utils/mongoose.utils');
 const Link = require('../models/link.model');
 const Visit = require('../models/visit.model');
 const APIError = require('../utils/APIError.utils');
@@ -30,7 +32,10 @@ module.exports = {
   },
   create: async (req, res, next) => {
     try {
-      let link = await Link.findOne({ originalUrl: req.body.originalUrl });
+      let { originalUrl } = req.body;
+      originalUrl = withHttp(withoutWWW(originalUrl));
+
+      let link = await Link.findOne({ originalUrl });
 
       // If already exists, return existing link
       if (link) {
@@ -41,8 +46,8 @@ module.exports = {
       const tinyUrlId = decimalToBaseN(nextSeq, 62);
 
       link = new Link({
-        ...req.body,
         index: nextSeq,
+        originalUrl,
         tinyUrlId,
         tinyUrl: `${PUBLIC_URL}/${tinyUrlId}`,
       });
