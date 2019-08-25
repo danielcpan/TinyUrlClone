@@ -3,7 +3,7 @@
 
 Check out the app! https://tiny-url-clone.netlify.com
 
-## Budget App using the following technologies:
+## TinyUrlClone uses the following technologies:
 
 ### BackEnd: 
 
