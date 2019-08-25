@@ -1,4 +1,4 @@
-**TinyUrlClone is a URL shortner just like TinyUrl and Bitly**  
+**TinyUrlClone is a URL shortener just like TinyUrl and Bitly**  
 **Note, because I cannot purchase my own custom domain, this project's frontend is hosted on netlify and it's api on heroku. Because of this, the original url is really long and thus has no real world use case. Was made to simply demonstrate how to make a real world url shortner**
 
 Check out the app! https://tiny-url-clone.netlify.com
